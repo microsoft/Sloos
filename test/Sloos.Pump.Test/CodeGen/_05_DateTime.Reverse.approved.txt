@@ -1,0 +1,70 @@
+﻿namespace Fact.Models
+{
+    public partial class Context : global::System.Data.Entity.DbContext
+    {
+        static Context()
+        {
+            global::System.Data.Entity.Database.SetInitializer<Context>(null);
+        }
+
+        public Context(string nameOrConnectionString)
+            : base(nameOrConnectionString)
+        {
+        }
+
+        public global::System.Data.Entity.DbSet<global::Fact.Models.Table> Tables { get; set; }
+
+        protected override void OnModelCreating(global::System.Data.Entity.DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new global::Fact.Models.Mapping.TableMap());
+        }
+    }
+}
+
+
+namespace Fact.Models
+{
+    public partial class Table
+    {
+        public global::System.Int32 ID { get; set; }
+        public global::System.DateTime LastUpdated { get; set; }
+        public global::System.DateTime TypeIsDateTime1 { get; set; }
+        public global::System.DateTime TypeIsDateTime2 { get; set; }
+        public global::System.TimeSpan Time { get; set; }
+        public global::System.TimeSpan Time_Precision0 { get; set; }
+        public global::System.Byte[] TimeStamp { get; set; }
+    }
+}
+
+
+namespace Fact.Models.Mapping
+{
+    public class TableMap : global::System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Table>
+    {
+        public TableMap()
+        {
+            // Primary Key
+            this.HasKey(x => x.ID);
+
+            // Properties
+            this.Property(x => x.TimeStamp)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(8)
+                .IsRowVersion();
+
+            // Table & Column Mappings
+            this.ToTable("Tables", "dbo");
+            this.Property(x => x.ID).HasColumnName("ID");
+            this.Property(x => x.LastUpdated).HasColumnName("LastUpdated");
+            this.Property(x => x.TypeIsDateTime1).HasColumnName("TypeIsDateTime1");
+            this.Property(x => x.TypeIsDateTime2).HasColumnName("TypeIsDateTime2");
+            this.Property(x => x.Time).HasColumnName("Time");
+            this.Property(x => x.Time_Precision0).HasColumnName("Time_Precision0");
+            this.Property(x => x.TimeStamp).HasColumnName("TimeStamp");
+
+            // Relationships
+        }
+    }
+}
+

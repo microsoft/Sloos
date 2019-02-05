@@ -1,0 +1,55 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace GuidIdentity.Models.Mapping
+{
+    public class TableMap : EntityTypeConfiguration<Table>
+    {
+        public TableMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.ID);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("Tables");
+            this.Property(t => t.ID).HasColumnName("ID");
+        }
+    }
+}
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using GuidIdentity.Models.Mapping;
+
+namespace GuidIdentity.Models
+{
+    public partial class GuidIdentityContext : DbContext
+    {
+        static GuidIdentityContext()
+        {
+            Database.SetInitializer<GuidIdentityContext>(null);
+        }
+
+        public GuidIdentityContext()
+            : base("Name=GuidIdentityContext")
+        {
+        }
+
+        public DbSet<Table> Tables { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new TableMap());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace GuidIdentity.Models
+{
+    public partial class Table
+    {
+        public System.Guid ID { get; set; }
+    }
+}

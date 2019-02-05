@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dboContainer" CdmEntityContainer="MyContext">
+    <EntitySetMapping Name="Posts">
+      <EntityTypeMapping TypeName="DefaultNamespace.Post">
+        <MappingFragment StoreEntitySet="Posts">
+          <ScalarProperty Name="PostId" ColumnName="PostId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tags">
+      <EntityTypeMapping TypeName="DefaultNamespace.Tag">
+        <MappingFragment StoreEntitySet="Tags">
+          <ScalarProperty Name="TagId" ColumnName="TagId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PostTags" TypeName="DefaultNamespace.PostTags" StoreEntitySet="PostTags">
+      <EndProperty Name="Posts">
+        <ScalarProperty Name="PostId" ColumnName="Post_PostId" />
+      </EndProperty>
+      <EndProperty Name="Tags">
+        <ScalarProperty Name="TagId" ColumnName="Tag_TagId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

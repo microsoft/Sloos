@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DefaultNamespace" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="MyContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Tables" EntityType="DefaultNamespace.Table" />
+  </EntityContainer>
+  <EntityType Name="Table">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LastUpdated" Type="DateTime" Nullable="false" />
+    <Property Name="TypeIsDateTime1" Type="DateTime" Nullable="false" />
+    <Property Name="TypeIsDateTime2" Type="DateTime" Nullable="false" />
+    <Property Name="Time" Type="Time" Nullable="false" />
+    <Property Name="Time_Precision0" Type="Time" Nullable="false" />
+    <Property Name="TimeStamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+</Schema>

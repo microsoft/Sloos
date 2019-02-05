@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.props" Condition="Exists('..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.props')" />
+  <Import Project="..\..\packages\xunit.core.2.4.1\build\xunit.core.props" Condition="Exists('..\..\packages\xunit.core.2.4.1\build\xunit.core.props')" />
+  <Import Project="..\..\build\Sloos.Settings.targets" />
+  <PropertyGroup>
+    <ProjectGuid>{7383CA04-FCAA-4066-91F6-5D363CA25EB9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Sloos.Common.Test</RootNamespace>
+    <AssemblyName>Sloos.Common.Test</AssemblyName>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=5.6.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.5.6.0\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="xunit.abstractions">
+      <HintPath>..\..\packages\xunit.abstractions.2.0.3\lib\net35\xunit.abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert">
+      <HintPath>..\..\packages\xunit.assert.2.4.1\lib\netstandard1.1\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core">
+      <HintPath>..\..\packages\xunit.extensibility.core.2.4.1\lib\net452\xunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.execution.desktop">
+      <HintPath>..\..\packages\xunit.extensibility.execution.2.4.1\lib\net452\xunit.execution.desktop.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\build\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Args\ArgsHelpersTest.cs" />
+    <Compile Include="Args\ArgsParserTest.LongName.cs" />
+    <Compile Include="Args\ArgsParserTest.ShortName.cs" />
+    <Compile Include="Args\ArgsParserTest.UnparsedArgs.cs" />
+    <Compile Include="Args\ArgsParserTest.DefaultValue.cs" />
+    <Compile Include="Args\ArgsParserTest.NegateFlag.cs" />
+    <Compile Include="Args\ArgsParserTest.DelimitedValue.cs" />
+    <Compile Include="Args\ArgsParserTest.Derived.cs" />
+    <Compile Include="Args\ParsedArgFactoryTest.cs" />
+    <Compile Include="Args\ParsedArgTest.cs" />
+    <Compile Include="Extension.cs" />
+    <Compile Include="Parse\CharReaderTest.cs" />
+    <Compile Include="Parse\CsvSerializerFactoryTest.cs" />
+    <Compile Include="Parse\CsvSerializerHeaderFactoryTest.cs" />
+    <Compile Include="Parse\CsvSerializerHelpersTest.cs" />
+    <Compile Include="Parse\CsvSerializerTest.cs" />
+    <Compile Include="Parse\DelimitedColumnFactoryTest.cs" />
+    <Compile Include="Parse\DelimitedHeaderElectorTest.cs" />
+    <Compile Include="Parse\DelimitedHeaderTest.cs" />
+    <Compile Include="Parse\DelimitedParserElectorTest.cs" />
+    <Compile Include="Parse\DelimitedParserStateCaptureTest.cs" />
+    <Compile Include="Parse\DelimitedParserStateDelimitTest.cs" />
+    <Compile Include="Parse\DelimitedParserStateQuoteTest.cs" />
+    <Compile Include="Parse\DelimitedParserStub.cs" />
+    <Compile Include="Parse\DelimitedParserTest.cs" />
+    <Compile Include="Parse\DelimitedRecordParserTest.cs" />
+    <Compile Include="Parse\DelimiterElectorTest.cs" />
+    <Compile Include="Parse\SpreadsheetColumnTypeDetectorTest.cs" />
+    <Compile Include="Parse\SpreadsheetFactoryTest.cs" />
+    <Compile Include="Parse\SpreadSheetTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlBulk\SqlBulkCopyTest.cs" />
+    <Compile Include="StringSplitTest.cs" />
+    <Compile Include="TestData.Csv.cs" />
+    <Compile Include="TestData.CsvSerializer.cs" />
+    <Compile Include="TestHelpers.cs" />
+    <Compile Include="TypeElectorTest.cs" />
+    <Compile Include="Type\AnonymousEntityTypeBuilderTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Sloos.Common\Sloos.Common.csproj">
+      <Project>{EE13D617-D29C-4D50-9E09-6426B1A9ADAD}</Project>
+      <Name>Sloos.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\xunit.core.2.4.1\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.core.2.4.1\build\xunit.core.props'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.core.2.4.1\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.core.2.4.1\build\xunit.core.targets'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.props'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\xunit.core.2.4.1\build\xunit.core.targets" Condition="Exists('..\..\packages\xunit.core.2.4.1\build\xunit.core.targets')" />
+  <Import Project="..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.targets" Condition="Exists('..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.targets')" />
+</Project>

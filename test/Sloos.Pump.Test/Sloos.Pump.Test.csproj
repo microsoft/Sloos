@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.props" Condition="Exists('..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.props')" />
+  <Import Project="..\..\packages\xunit.core.2.4.1\build\xunit.core.props" Condition="Exists('..\..\packages\xunit.core.2.4.1\build\xunit.core.props')" />
+  <Import Project="..\..\build\Sloos.Settings.targets" />
+  <PropertyGroup>
+    <ProjectGuid>{53A87CBC-8E44-4E73-A2C5-EEBFCC11228D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Sloos.Pump.Test</RootNamespace>
+    <AssemblyName>Sloos.Pump.Test</AssemblyName>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ApprovalTests, Version=3.0.0.0, Culture=neutral, PublicKeyToken=11bd7d124fc62e0f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ApprovalTests.3.0.18\lib\netstandard2.0\ApprovalTests.dll</HintPath>
+    </Reference>
+    <Reference Include="ApprovalUtilities, Version=3.0.0.0, Culture=neutral, PublicKeyToken=11bd7d124fc62e0f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ApprovalUtilities.3.0.18\lib\net461\ApprovalUtilities.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.SqlServerCompact.6.2.0\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=5.6.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.5.6.0\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Win32.Registry, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Win32.Registry.4.5.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Data.SqlClient, Version=4.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Data.SqlClient.4.6.0\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Drawing.Common.4.5.1\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Security.AccessControl, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.AccessControl.4.5.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Security.Principal.Windows.4.5.1\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TextCopy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1ca091877d12ca03, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TextCopy.1.5.0\lib\netstandard2.0\TextCopy.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.abstractions.2.0.3\lib\net35\xunit.abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.4.1.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.assert.2.4.1\lib\netstandard1.1\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.4.1.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.core.2.4.1\lib\net452\xunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.4.1.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.execution.2.4.1\lib\net452\xunit.execution.desktop.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\build\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ApprovalsExtensions.cs" />
+    <Compile Include="Builder\AssociationEndMemberBuilder.cs" />
+    <Compile Include="Builder\EdmPropertyBuilder.cs" />
+    <Compile Include="Builder\EntityTypeBuilder.cs" />
+    <Compile Include="Builder\IEntityFrameworkBuilder.cs" />
+    <Compile Include="Builder\NavigationPropertyBuilder.cs" />
+    <Compile Include="Builder\TypeUsageFactory.cs" />
+    <Compile Include="CodeGen\_07_OneToMany.cs" />
+    <Compile Include="CodeGen\_08_ManyToMany.cs" />
+    <Compile Include="EntityFramework\CodeGenEscaperTest.cs" />
+    <Compile Include="EntityFramework\ContextEntityViewFactoryTest.cs" />
+    <Compile Include="EntityFramework\EdmMappingTest.cs" />
+    <Compile Include="EntityFramework\EntityConstructorViewFactoryTest.cs" />
+    <Compile Include="EntityFramework\EntityNamespaceTest.cs" />
+    <Compile Include="EntityFramework\EntityNameTest.cs" />
+    <Compile Include="EntityFramework\EntityNavigationViewFactoryTest.cs" />
+    <Compile Include="EntityFramework\ContextViewFactoryTest.cs" />
+    <Compile Include="EntityFramework\MappingColumnNameViewFactoryTest.cs" />
+    <Compile Include="EntityFramework\MappingKeyViewFactoryTest.cs" />
+    <Compile Include="EntityFramework\MappingManyToManyViewTest.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherHasStoreGeneratedPatternTest.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherIsFixedLengthTest.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherIsRequiredTest.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherIsRowVersionTest.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherIsUnicodeTest.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherMaxLengthTest.cs" />
+    <Compile Include="EntityFramework\MappingPropertyTest.cs" />
+    <Compile Include="EntityFramework\MappingPropertyViewFactoryTest.cs" />
+    <Compile Include="EntityFramework\MappingRelationshipForeignKeyMatcherTest.cs" />
+    <Compile Include="EntityFramework\MappingRelationshipForeignKeyViewFactoryTest.cs" />
+    <Compile Include="EntityFramework\MappingTableViewFactoryTest.cs" />
+    <Compile Include="EntityFramework\SampleGeneratorFactory.cs" />
+    <Compile Include="EntityFramework\SqlServerGeneratorFactoryTest.cs" />
+    <Compile Include="EntityFramework\Xsd\DeserializeInverseMapping.cs" />
+    <Compile Include="EntityFramework\Xsd\DeserializeAllClrTypesTest.cs" />
+    <Compile Include="EntityFramework\Xsd\DeserializeCompositeKey.cs" />
+    <Compile Include="EntityFramework\Xsd\DeserializeDateTime.cs" />
+    <Compile Include="EntityFramework\Xsd\DeserializeGuidIdentity.cs" />
+    <Compile Include="EntityFramework\Xsd\DeserializeManyToMany.cs" />
+    <Compile Include="EntityFramework\Xsd\DeserializeOneToMany.cs" />
+    <Compile Include="EntityFramework\Xsd\DeserializeSimpleTest.cs" />
+    <Compile Include="EntityFramework\Xsd\DeserializeStringTest.cs" />
+    <Compile Include="EntityFramework\EntityEntityViewFactoryTest.cs" />
+    <Compile Include="MigrateTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Samples\CodeFirstGen.cs" />
+    <Compile Include="SqlCompactContextFactory.cs" />
+    <Compile Include="Test.cs" />
+    <Compile Include="CodeGen\_01_Simple.cs" />
+    <Compile Include="CodeGen\_02_Strings.cs" />
+    <Compile Include="CodeGen\_03_AllClrTypes.cs" />
+    <Compile Include="CodeGen\_04_GuidIdentity.cs" />
+    <Compile Include="CodeGen\_05_DateTime.cs" />
+    <Compile Include="CodeGen\_06_CompositeKey.cs" />
+    <Compile Include="RegurgitatingXmlWriterTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Samples\CodeFirstGen\AdventureWorks.csdl" />
+    <None Include="Samples\CodeFirstGen\AdventureWorks.msdl" />
+    <None Include="Samples\CodeFirstGen\AdventureWorks.ssdl" />
+    <None Include="Samples\CodeFirstGen\AllClrTypes.csdl" />
+    <None Include="Samples\CodeFirstGen\AllClrTypes.linq" />
+    <None Include="Samples\CodeFirstGen\AllClrTypes.msdl" />
+    <None Include="Samples\CodeFirstGen\AllClrTypes.ssdl" />
+    <None Include="Samples\CodeFirstGen\CompositeKey.csdl" />
+    <None Include="Samples\CodeFirstGen\CompositeKey.linq" />
+    <None Include="Samples\CodeFirstGen\CompositeKey.msdl" />
+    <None Include="Samples\CodeFirstGen\CompositeKey.ssdl" />
+    <None Include="Samples\CodeFirstGen\DateTime.csdl" />
+    <None Include="Samples\CodeFirstGen\DateTime.linq" />
+    <None Include="Samples\CodeFirstGen\DateTime.msdl" />
+    <None Include="Samples\CodeFirstGen\DateTime.ssdl" />
+    <None Include="Samples\CodeFirstGen\GuidIdentity.csdl" />
+    <None Include="Samples\CodeFirstGen\GuidIdentity.linq" />
+    <None Include="Samples\CodeFirstGen\GuidIdentity.msdl" />
+    <None Include="Samples\CodeFirstGen\GuidIdentity.ssdl" />
+    <None Include="Samples\CodeFirstGen\InverseMapping.csdl" />
+    <None Include="Samples\CodeFirstGen\InverseMapping.linq" />
+    <None Include="Samples\CodeFirstGen\InverseMapping.msdl" />
+    <None Include="Samples\CodeFirstGen\InverseMapping.ssdl" />
+    <None Include="Samples\CodeFirstGen\ManyToMany.csdl" />
+    <None Include="Samples\CodeFirstGen\ManyToMany.linq" />
+    <None Include="Samples\CodeFirstGen\ManyToMany.msdl" />
+    <None Include="Samples\CodeFirstGen\ManyToMany.ssdl" />
+    <None Include="Samples\CodeFirstGen\OneToMany.csdl" />
+    <None Include="Samples\CodeFirstGen\OneToMany.linq" />
+    <None Include="Samples\CodeFirstGen\OneToMany.msdl" />
+    <None Include="Samples\CodeFirstGen\OneToMany.ssdl" />
+    <None Include="Samples\CodeFirstGen\Simple.csdl" />
+    <None Include="Samples\CodeFirstGen\Simple.linq" />
+    <None Include="Samples\CodeFirstGen\Simple.msdl" />
+    <None Include="Samples\CodeFirstGen\Simple.ssdl" />
+    <None Include="Samples\CodeFirstGen\Strings.csdl" />
+    <None Include="Samples\CodeFirstGen\Strings.linq" />
+    <None Include="Samples\CodeFirstGen\Strings.msdl" />
+    <None Include="Samples\CodeFirstGen\Strings.ssdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Sloos.Pump\Sloos.Pump.csproj">
+      <Project>{b86a867a-e473-4998-a3e9-ba119a743693}</Project>
+      <Name>Sloos.Pump</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sloos.Common.Test\Sloos.Common.Test.csproj">
+      <Project>{7383ca04-fcaa-4066-91f6-5d363ca25eb9}</Project>
+      <Name>Sloos.Common.Test</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeGen\_01_Simple.Reverse.approved.txt" />
+    <Content Include="CodeGen\_02_Strings.Reverse.approved.txt" />
+    <Content Include="CodeGen\_03_AllClrTypes.Reverse.approved.txt" />
+    <Content Include="CodeGen\_04_GuidIdentity.Reverse.approved.txt" />
+    <Content Include="CodeGen\_05_DateTime.Reverse.approved.txt" />
+    <Content Include="CodeGen\_06_CompositeKey.Reverse.approved.txt" />
+    <Content Include="CodeGen\_07_OneToMany.Reverse.approved.txt" />
+    <Content Include="CodeGen\_08_ManyToMany.Reverse.approved.txt" />
+    <Content Include="Samples\CodeFirstGen\0README.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__AdventureWorks.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__AllClrTypes.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__CompositeKey.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__DateTime.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__GuidIdentity.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__InverseMapping.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__ManyToMany.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__OneToMany.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__Simple.txt" />
+    <Content Include="Samples\CodeFirstGen\CodeFirstReverseEngineer__Strings.txt" />
+    <Content Include="CodeGen\_01_Simple.Context.approved.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <SqlCEx86Files Include="$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" />
+    <SqlCEamd64Files Include="$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="@(SqlCEx86Files)" DestinationFolder="$(TargetDir)x86" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(SqlCEamd64Files)" DestinationFolder="$(TargetDir)amd64" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\xunit.core.2.4.1\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.core.2.4.1\build\xunit.core.props'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.core.2.4.1\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.core.2.4.1\build\xunit.core.targets'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.props'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\xunit.core.2.4.1\build\xunit.core.targets" Condition="Exists('..\..\packages\xunit.core.2.4.1\build\xunit.core.targets')" />
+  <Import Project="..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.targets" Condition="Exists('..\..\packages\xunit.runner.msbuild.2.4.1\build\net452\xunit.runner.msbuild.targets')" />
+</Project>

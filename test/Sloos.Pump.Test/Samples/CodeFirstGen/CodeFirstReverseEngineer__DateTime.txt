@@ -1,0 +1,73 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace DateTime.Models.Mapping
+{
+    public class TableMap : EntityTypeConfiguration<Table>
+    {
+        public TableMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.ID);
+
+            // Properties
+            this.Property(t => t.TimeStamp)
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(8)
+                .IsRowVersion();
+
+            // Table & Column Mappings
+            this.ToTable("Tables");
+            this.Property(t => t.ID).HasColumnName("ID");
+            this.Property(t => t.LastUpdated).HasColumnName("LastUpdated");
+            this.Property(t => t.TypeIsDateTime1).HasColumnName("TypeIsDateTime1");
+            this.Property(t => t.TypeIsDateTime2).HasColumnName("TypeIsDateTime2");
+            this.Property(t => t.Time).HasColumnName("Time");
+            this.Property(t => t.Time_Precision0).HasColumnName("Time_Precision0");
+            this.Property(t => t.TimeStamp).HasColumnName("TimeStamp");
+        }
+    }
+}
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using DateTime.Models.Mapping;
+
+namespace DateTime.Models
+{
+    public partial class DateTimeContext : DbContext
+    {
+        static DateTimeContext()
+        {
+            Database.SetInitializer<DateTimeContext>(null);
+        }
+
+        public DateTimeContext()
+            : base("Name=DateTimeContext")
+        {
+        }
+
+        public DbSet<Table> Tables { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new TableMap());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace DateTime.Models
+{
+    public partial class Table
+    {
+        public int ID { get; set; }
+        public System.DateTime LastUpdated { get; set; }
+        public System.DateTime TypeIsDateTime1 { get; set; }
+        public System.DateTime TypeIsDateTime2 { get; set; }
+        public System.TimeSpan Time { get; set; }
+        public System.TimeSpan Time_Precision0 { get; set; }
+        public byte[] TimeStamp { get; set; }
+    }
+}

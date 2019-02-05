@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbo" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="dboContainer">
+    <EntitySet Name="Tables" EntityType="dbo.Tables" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Tables">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Default" Type="nvarchar(max)" />
+    <Property Name="Required" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="MaxLength128" Type="nvarchar" MaxLength="128" />
+    <Property Name="MinLength100MaxLength128" Type="nvarchar" MaxLength="128" />
+    <Property Name="NotUnicode" Type="varchar(max)" />
+    <Property Name="FixedLength" Type="nchar" MaxLength="100" />
+  </EntityType>
+</Schema>

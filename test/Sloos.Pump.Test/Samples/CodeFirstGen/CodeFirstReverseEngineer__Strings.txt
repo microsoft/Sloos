@@ -1,0 +1,80 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace Strings.Models.Mapping
+{
+    public class TableMap : EntityTypeConfiguration<Table>
+    {
+        public TableMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.ID);
+
+            // Properties
+            this.Property(t => t.Required)
+                .IsRequired();
+
+            this.Property(t => t.MaxLength128)
+                .HasMaxLength(128);
+
+            this.Property(t => t.MinLength100MaxLength128)
+                .HasMaxLength(128);
+
+            this.Property(t => t.FixedLength)
+                .IsFixedLength()
+                .HasMaxLength(100);
+
+            // Table & Column Mappings
+            this.ToTable("Tables");
+            this.Property(t => t.ID).HasColumnName("ID");
+            this.Property(t => t.Default).HasColumnName("Default");
+            this.Property(t => t.Required).HasColumnName("Required");
+            this.Property(t => t.MaxLength128).HasColumnName("MaxLength128");
+            this.Property(t => t.MinLength100MaxLength128).HasColumnName("MinLength100MaxLength128");
+            this.Property(t => t.NotUnicode).HasColumnName("NotUnicode");
+            this.Property(t => t.FixedLength).HasColumnName("FixedLength");
+        }
+    }
+}
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using Strings.Models.Mapping;
+
+namespace Strings.Models
+{
+    public partial class StringsContext : DbContext
+    {
+        static StringsContext()
+        {
+            Database.SetInitializer<StringsContext>(null);
+        }
+
+        public StringsContext()
+            : base("Name=StringsContext")
+        {
+        }
+
+        public DbSet<Table> Tables { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new TableMap());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace Strings.Models
+{
+    public partial class Table
+    {
+        public int ID { get; set; }
+        public string Default { get; set; }
+        public string Required { get; set; }
+        public string MaxLength128 { get; set; }
+        public string MinLength100MaxLength128 { get; set; }
+        public string NotUnicode { get; set; }
+        public string FixedLength { get; set; }
+    }
+}

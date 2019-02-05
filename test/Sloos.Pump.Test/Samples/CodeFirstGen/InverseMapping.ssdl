@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbo" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="dboContainer">
+    <EntitySet Name="Blogs" EntityType="dbo.Blogs" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="People" EntityType="dbo.People" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Posts" EntityType="dbo.Posts" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_dbo_Posts_dbo_Blogs_BlogId" Association="dbo.FK_dbo_Posts_dbo_Blogs_BlogId">
+      <End Role="Blogs" EntitySet="Blogs" />
+      <End Role="Posts" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Posts_dbo_People_CreatedBy_Id" Association="dbo.FK_dbo_Posts_dbo_People_CreatedBy_Id">
+      <End Role="People" EntitySet="People" />
+      <End Role="Posts" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Posts_dbo_People_UpdatedBy_Id" Association="dbo.FK_dbo_Posts_dbo_People_UpdatedBy_Id">
+      <End Role="People" EntitySet="People" />
+      <End Role="Posts" EntitySet="Posts" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Blogs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="People">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Posts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="nvarchar(max)" />
+    <Property Name="BlogId" Type="int" Nullable="false" />
+    <Property Name="CreatedBy_Id" Type="int" />
+    <Property Name="UpdatedBy_Id" Type="int" />
+  </EntityType>
+  <Association Name="FK_dbo_Posts_dbo_Blogs_BlogId">
+    <End Role="Blogs" Type="dbo.Blogs" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Posts" Type="dbo.Posts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Blogs">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Posts">
+        <PropertyRef Name="BlogId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Posts_dbo_People_CreatedBy_Id">
+    <End Role="People" Type="dbo.People" Multiplicity="0..1" />
+    <End Role="Posts" Type="dbo.Posts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="People">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Posts">
+        <PropertyRef Name="CreatedBy_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Posts_dbo_People_UpdatedBy_Id">
+    <End Role="People" Type="dbo.People" Multiplicity="0..1" />
+    <End Role="Posts" Type="dbo.Posts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="People">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Posts">
+        <PropertyRef Name="UpdatedBy_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

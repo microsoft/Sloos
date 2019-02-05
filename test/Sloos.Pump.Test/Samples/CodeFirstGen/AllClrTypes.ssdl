@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbo" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="dboContainer">
+    <EntitySet Name="Tables" EntityType="dbo.Tables" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Tables">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="byte_type" Type="tinyint" Nullable="false" />
+    <Property Name="bool_type" Type="bit" Nullable="false" />
+    <Property Name="short_type" Type="smallint" Nullable="false" />
+    <Property Name="int_type" Type="int" Nullable="false" />
+    <Property Name="long_type" Type="bigint" Nullable="false" />
+    <Property Name="float_type" Type="real" Nullable="false" />
+    <Property Name="double_type" Type="float" Nullable="false" />
+    <Property Name="decimal_type" Type="decimal" Nullable="false" Scale="2" />
+    <Property Name="Guid_type" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="TimeSpan_type" Type="time" Nullable="false" />
+    <Property Name="DateTime_type" Type="datetime" Nullable="false" />
+    <Property Name="DateTimeOffset_type" Type="datetimeoffset" Nullable="false" />
+    <Property Name="byte_nullable" Type="tinyint" />
+    <Property Name="bool_nullable" Type="bit" />
+    <Property Name="short_nullable" Type="smallint" />
+    <Property Name="int_nullable" Type="int" />
+    <Property Name="long_nullable" Type="bigint" />
+    <Property Name="float_nullable" Type="real" />
+    <Property Name="double_nullable" Type="float" />
+    <Property Name="decimal_nullable" Type="decimal" Scale="2" />
+    <Property Name="Guid_nullable" Type="uniqueidentifier" />
+    <Property Name="TimeSpan_nullable" Type="time" />
+    <Property Name="DateTime_nullable" Type="datetime" />
+    <Property Name="DateTimeOffset_nullable" Type="datetimeoffset" />
+    <Property Name="byte_array_type" Type="varbinary(max)" />
+    <Property Name="string_type" Type="nvarchar(max)" />
+  </EntityType>
+</Schema>

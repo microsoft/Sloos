@@ -1,0 +1,95 @@
+﻿namespace Fact.Models
+{
+    public partial class Context : global::System.Data.Entity.DbContext
+    {
+        static Context()
+        {
+            global::System.Data.Entity.Database.SetInitializer<Context>(null);
+        }
+
+        public Context(string nameOrConnectionString)
+            : base(nameOrConnectionString)
+        {
+        }
+
+        public global::System.Data.Entity.DbSet<global::Fact.Models.Post> Posts { get; set; }
+        public global::System.Data.Entity.DbSet<global::Fact.Models.Tag> Tags { get; set; }
+
+        protected override void OnModelCreating(global::System.Data.Entity.DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new global::Fact.Models.Mapping.PostMap());
+            modelBuilder.Configurations.Add(new global::Fact.Models.Mapping.TagMap());
+        }
+    }
+}
+
+
+namespace Fact.Models
+{
+    public partial class Post
+    {
+        public Post()
+        {
+            this.Tags = new global::System.Collections.Generic.List<Tag>();
+        }
+        public global::System.Int32 ID { get; set; }
+        public virtual global::System.Collections.Generic.ICollection<Tag> Tags { get; set; }
+    }
+}
+
+
+namespace Fact.Models
+{
+    public partial class Tag
+    {
+        public global::System.Int32 ID { get; set; }
+        public global::System.Nullable<global::System.Int32> Post_ID { get; set; }
+        public virtual Post Post { get; set; }
+    }
+}
+
+
+namespace Fact.Models.Mapping
+{
+    public class PostMap : global::System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Post>
+    {
+        public PostMap()
+        {
+            // Primary Key
+            this.HasKey(x => x.ID);
+
+            // Properties
+
+            // Table & Column Mappings
+            this.ToTable("Posts", "dbo");
+            this.Property(x => x.ID).HasColumnName("ID");
+
+            // Relationships
+        }
+    }
+}
+
+namespace Fact.Models.Mapping
+{
+    public class TagMap : global::System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Tag>
+    {
+        public TagMap()
+        {
+            // Primary Key
+            this.HasKey(x => x.ID);
+
+            // Properties
+
+            // Table & Column Mappings
+            this.ToTable("Tags", "dbo");
+            this.Property(x => x.ID).HasColumnName("ID");
+            this.Property(x => x.Post_ID).HasColumnName("Post_ID");
+
+            // Relationships
+            this.HasOptional(x => x.Post)
+                .WithMany(x => x.Tags)
+                .HasForeignKey(x => x.Post_ID);
+        }
+    }
+}
+

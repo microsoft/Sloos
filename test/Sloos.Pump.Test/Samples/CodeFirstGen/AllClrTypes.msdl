@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dboContainer" CdmEntityContainer="MyContext">
+    <EntitySetMapping Name="Tables">
+      <EntityTypeMapping TypeName="DefaultNamespace.Table">
+        <MappingFragment StoreEntitySet="Tables">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="byte_type" ColumnName="byte_type" />
+          <ScalarProperty Name="bool_type" ColumnName="bool_type" />
+          <ScalarProperty Name="short_type" ColumnName="short_type" />
+          <ScalarProperty Name="int_type" ColumnName="int_type" />
+          <ScalarProperty Name="long_type" ColumnName="long_type" />
+          <ScalarProperty Name="float_type" ColumnName="float_type" />
+          <ScalarProperty Name="double_type" ColumnName="double_type" />
+          <ScalarProperty Name="decimal_type" ColumnName="decimal_type" />
+          <ScalarProperty Name="Guid_type" ColumnName="Guid_type" />
+          <ScalarProperty Name="TimeSpan_type" ColumnName="TimeSpan_type" />
+          <ScalarProperty Name="DateTime_type" ColumnName="DateTime_type" />
+          <ScalarProperty Name="DateTimeOffset_type" ColumnName="DateTimeOffset_type" />
+          <ScalarProperty Name="byte_nullable" ColumnName="byte_nullable" />
+          <ScalarProperty Name="bool_nullable" ColumnName="bool_nullable" />
+          <ScalarProperty Name="short_nullable" ColumnName="short_nullable" />
+          <ScalarProperty Name="int_nullable" ColumnName="int_nullable" />
+          <ScalarProperty Name="long_nullable" ColumnName="long_nullable" />
+          <ScalarProperty Name="float_nullable" ColumnName="float_nullable" />
+          <ScalarProperty Name="double_nullable" ColumnName="double_nullable" />
+          <ScalarProperty Name="decimal_nullable" ColumnName="decimal_nullable" />
+          <ScalarProperty Name="Guid_nullable" ColumnName="Guid_nullable" />
+          <ScalarProperty Name="TimeSpan_nullable" ColumnName="TimeSpan_nullable" />
+          <ScalarProperty Name="DateTime_nullable" ColumnName="DateTime_nullable" />
+          <ScalarProperty Name="DateTimeOffset_nullable" ColumnName="DateTimeOffset_nullable" />
+          <ScalarProperty Name="byte_array_type" ColumnName="byte_array_type" />
+          <ScalarProperty Name="string_type" ColumnName="string_type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

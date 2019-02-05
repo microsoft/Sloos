@@ -1,0 +1,74 @@
+﻿namespace Fact.Models
+{
+    public partial class Context : global::System.Data.Entity.DbContext
+    {
+        static Context()
+        {
+            global::System.Data.Entity.Database.SetInitializer<Context>(null);
+        }
+
+        public Context(string nameOrConnectionString)
+            : base(nameOrConnectionString)
+        {
+        }
+
+        public global::System.Data.Entity.DbSet<global::Fact.Models.Table> Tables { get; set; }
+
+        protected override void OnModelCreating(global::System.Data.Entity.DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new global::Fact.Models.Mapping.TableMap());
+        }
+    }
+}
+
+
+namespace Fact.Models
+{
+    public partial class Table
+    {
+        public global::System.Int32 ID { get; set; }
+        public global::System.String Default { get; set; }
+        public global::System.String Required { get; set; }
+        public global::System.String MaxLength128 { get; set; }
+        public global::System.String MinLength100MaxLength128 { get; set; }
+        public global::System.String NotUnicode { get; set; }
+        public global::System.String FixedLength { get; set; }
+    }
+}
+
+
+namespace Fact.Models.Mapping
+{
+    public class TableMap : global::System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Table>
+    {
+        public TableMap()
+        {
+            // Primary Key
+            this.HasKey(x => x.ID);
+
+            // Properties
+            this.Property(x => x.Required)
+                .IsRequired();
+            this.Property(x => x.MaxLength128)
+                .HasMaxLength(128);
+            this.Property(x => x.MinLength100MaxLength128)
+                .HasMaxLength(128);
+            this.Property(x => x.FixedLength)
+                .IsFixedLength()
+                .HasMaxLength(100);
+
+            // Table & Column Mappings
+            this.ToTable("Tables", "dbo");
+            this.Property(x => x.ID).HasColumnName("ID");
+            this.Property(x => x.Default).HasColumnName("Default");
+            this.Property(x => x.Required).HasColumnName("Required");
+            this.Property(x => x.MaxLength128).HasColumnName("MaxLength128");
+            this.Property(x => x.MinLength100MaxLength128).HasColumnName("MinLength100MaxLength128");
+            this.Property(x => x.NotUnicode).HasColumnName("NotUnicode");
+            this.Property(x => x.FixedLength).HasColumnName("FixedLength");
+
+            // Relationships
+        }
+    }
+}
+

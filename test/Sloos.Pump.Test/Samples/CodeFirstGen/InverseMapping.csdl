@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DefaultNamespace" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="MyContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Blogs" EntityType="DefaultNamespace.Blog" />
+    <EntitySet Name="People" EntityType="DefaultNamespace.Person" />
+    <EntitySet Name="Posts" EntityType="DefaultNamespace.Post" />
+    <AssociationSet Name="FK_dbo_Posts_dbo_Blogs_BlogId" Association="DefaultNamespace.FK_dbo_Posts_dbo_Blogs_BlogId">
+      <End Role="Blogs" EntitySet="Blogs" />
+      <End Role="Posts" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Posts_dbo_People_CreatedBy_Id" Association="DefaultNamespace.FK_dbo_Posts_dbo_People_CreatedBy_Id">
+      <End Role="People" EntitySet="People" />
+      <End Role="Posts" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Posts_dbo_People_UpdatedBy_Id" Association="DefaultNamespace.FK_dbo_Posts_dbo_People_UpdatedBy_Id">
+      <End Role="People" EntitySet="People" />
+      <End Role="Posts" EntitySet="Posts" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Blog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Posts" Relationship="DefaultNamespace.FK_dbo_Posts_dbo_Blogs_BlogId" FromRole="Blogs" ToRole="Posts" />
+  </EntityType>
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Posts" Relationship="DefaultNamespace.FK_dbo_Posts_dbo_People_CreatedBy_Id" FromRole="People" ToRole="Posts" />
+    <NavigationProperty Name="Posts1" Relationship="DefaultNamespace.FK_dbo_Posts_dbo_People_UpdatedBy_Id" FromRole="People" ToRole="Posts" />
+  </EntityType>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+    <Property Name="BlogId" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy_Id" Type="Int32" />
+    <Property Name="UpdatedBy_Id" Type="Int32" />
+    <NavigationProperty Name="Blog" Relationship="DefaultNamespace.FK_dbo_Posts_dbo_Blogs_BlogId" FromRole="Posts" ToRole="Blogs" />
+    <NavigationProperty Name="Person" Relationship="DefaultNamespace.FK_dbo_Posts_dbo_People_CreatedBy_Id" FromRole="Posts" ToRole="People" />
+    <NavigationProperty Name="Person1" Relationship="DefaultNamespace.FK_dbo_Posts_dbo_People_UpdatedBy_Id" FromRole="Posts" ToRole="People" />
+  </EntityType>
+  <Association Name="FK_dbo_Posts_dbo_Blogs_BlogId">
+    <End Role="Blogs" Type="DefaultNamespace.Blog" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Posts" Type="DefaultNamespace.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Blogs">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Posts">
+        <PropertyRef Name="BlogId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Posts_dbo_People_CreatedBy_Id">
+    <End Role="People" Type="DefaultNamespace.Person" Multiplicity="0..1" />
+    <End Role="Posts" Type="DefaultNamespace.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="People">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Posts">
+        <PropertyRef Name="CreatedBy_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Posts_dbo_People_UpdatedBy_Id">
+    <End Role="People" Type="DefaultNamespace.Person" Multiplicity="0..1" />
+    <End Role="Posts" Type="DefaultNamespace.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="People">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Posts">
+        <PropertyRef Name="UpdatedBy_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

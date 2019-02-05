@@ -1,0 +1,64 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace CompositeKey.Models.Mapping
+{
+    public class TableMap : EntityTypeConfiguration<Table>
+    {
+        public TableMap()
+        {
+            // Primary Key
+            this.HasKey(t => new { t.ID, t.Name });
+
+            // Properties
+            this.Property(t => t.ID)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+            this.Property(t => t.Name)
+                .IsRequired()
+                .HasMaxLength(128);
+
+            // Table & Column Mappings
+            this.ToTable("Tables");
+            this.Property(t => t.ID).HasColumnName("ID");
+            this.Property(t => t.Name).HasColumnName("Name");
+        }
+    }
+}
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using CompositeKey.Models.Mapping;
+
+namespace CompositeKey.Models
+{
+    public partial class CompositeKeyContext : DbContext
+    {
+        static CompositeKeyContext()
+        {
+            Database.SetInitializer<CompositeKeyContext>(null);
+        }
+
+        public CompositeKeyContext()
+            : base("Name=CompositeKeyContext")
+        {
+        }
+
+        public DbSet<Table> Tables { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new TableMap());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace CompositeKey.Models
+{
+    public partial class Table
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+}

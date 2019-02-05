@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbo" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="dboContainer">
+    <EntitySet Name="Posts" EntityType="dbo.Posts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Tags" EntityType="dbo.Tags" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_dbo_Tags_dbo_Posts_Post_ID" Association="dbo.FK_dbo_Tags_dbo_Posts_Post_ID">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="Tags" EntitySet="Tags" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Posts">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="Tags">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Post_ID" Type="int" />
+  </EntityType>
+  <Association Name="FK_dbo_Tags_dbo_Posts_Post_ID">
+    <End Role="Posts" Type="dbo.Posts" Multiplicity="0..1" />
+    <End Role="Tags" Type="dbo.Tags" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Tags">
+        <PropertyRef Name="Post_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

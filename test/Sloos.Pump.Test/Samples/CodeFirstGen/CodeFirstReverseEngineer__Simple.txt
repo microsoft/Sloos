@@ -1,0 +1,57 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace Simple.Models.Mapping
+{
+    public class TableMap : EntityTypeConfiguration<Table>
+    {
+        public TableMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.ID);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("Tables");
+            this.Property(t => t.ID).HasColumnName("ID");
+            this.Property(t => t.Name).HasColumnName("Name");
+        }
+    }
+}
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using Simple.Models.Mapping;
+
+namespace Simple.Models
+{
+    public partial class SimpleContext : DbContext
+    {
+        static SimpleContext()
+        {
+            Database.SetInitializer<SimpleContext>(null);
+        }
+
+        public SimpleContext()
+            : base("Name=SimpleContext")
+        {
+        }
+
+        public DbSet<Table> Tables { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new TableMap());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace Simple.Models
+{
+    public partial class Table
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
+}

@@ -1,0 +1,107 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace AllClrTypes.Models.Mapping
+{
+    public class TableMap : EntityTypeConfiguration<Table>
+    {
+        public TableMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.ID);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("Tables");
+            this.Property(t => t.ID).HasColumnName("ID");
+            this.Property(t => t.byte_type).HasColumnName("byte_type");
+            this.Property(t => t.bool_type).HasColumnName("bool_type");
+            this.Property(t => t.short_type).HasColumnName("short_type");
+            this.Property(t => t.int_type).HasColumnName("int_type");
+            this.Property(t => t.long_type).HasColumnName("long_type");
+            this.Property(t => t.float_type).HasColumnName("float_type");
+            this.Property(t => t.double_type).HasColumnName("double_type");
+            this.Property(t => t.decimal_type).HasColumnName("decimal_type");
+            this.Property(t => t.Guid_type).HasColumnName("Guid_type");
+            this.Property(t => t.TimeSpan_type).HasColumnName("TimeSpan_type");
+            this.Property(t => t.DateTime_type).HasColumnName("DateTime_type");
+            this.Property(t => t.DateTimeOffset_type).HasColumnName("DateTimeOffset_type");
+            this.Property(t => t.byte_nullable).HasColumnName("byte_nullable");
+            this.Property(t => t.bool_nullable).HasColumnName("bool_nullable");
+            this.Property(t => t.short_nullable).HasColumnName("short_nullable");
+            this.Property(t => t.int_nullable).HasColumnName("int_nullable");
+            this.Property(t => t.long_nullable).HasColumnName("long_nullable");
+            this.Property(t => t.float_nullable).HasColumnName("float_nullable");
+            this.Property(t => t.double_nullable).HasColumnName("double_nullable");
+            this.Property(t => t.decimal_nullable).HasColumnName("decimal_nullable");
+            this.Property(t => t.Guid_nullable).HasColumnName("Guid_nullable");
+            this.Property(t => t.TimeSpan_nullable).HasColumnName("TimeSpan_nullable");
+            this.Property(t => t.DateTime_nullable).HasColumnName("DateTime_nullable");
+            this.Property(t => t.DateTimeOffset_nullable).HasColumnName("DateTimeOffset_nullable");
+            this.Property(t => t.byte_array_type).HasColumnName("byte_array_type");
+            this.Property(t => t.string_type).HasColumnName("string_type");
+        }
+    }
+}
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using AllClrTypes.Models.Mapping;
+
+namespace AllClrTypes.Models
+{
+    public partial class AllClrTypesContext : DbContext
+    {
+        static AllClrTypesContext()
+        {
+            Database.SetInitializer<AllClrTypesContext>(null);
+        }
+
+        public AllClrTypesContext()
+            : base("Name=AllClrTypesContext")
+        {
+        }
+
+        public DbSet<Table> Tables { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new TableMap());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace AllClrTypes.Models
+{
+    public partial class Table
+    {
+        public int ID { get; set; }
+        public byte byte_type { get; set; }
+        public bool bool_type { get; set; }
+        public short short_type { get; set; }
+        public int int_type { get; set; }
+        public long long_type { get; set; }
+        public float float_type { get; set; }
+        public double double_type { get; set; }
+        public decimal decimal_type { get; set; }
+        public System.Guid Guid_type { get; set; }
+        public System.TimeSpan TimeSpan_type { get; set; }
+        public System.DateTime DateTime_type { get; set; }
+        public System.DateTimeOffset DateTimeOffset_type { get; set; }
+        public Nullable<byte> byte_nullable { get; set; }
+        public Nullable<bool> bool_nullable { get; set; }
+        public Nullable<short> short_nullable { get; set; }
+        public Nullable<int> int_nullable { get; set; }
+        public Nullable<long> long_nullable { get; set; }
+        public Nullable<float> float_nullable { get; set; }
+        public Nullable<double> double_nullable { get; set; }
+        public Nullable<decimal> decimal_nullable { get; set; }
+        public Nullable<System.Guid> Guid_nullable { get; set; }
+        public Nullable<System.TimeSpan> TimeSpan_nullable { get; set; }
+        public Nullable<System.DateTime> DateTime_nullable { get; set; }
+        public Nullable<System.DateTimeOffset> DateTimeOffset_nullable { get; set; }
+        public byte[] byte_array_type { get; set; }
+        public string string_type { get; set; }
+    }
+}

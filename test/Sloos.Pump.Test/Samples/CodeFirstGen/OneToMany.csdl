@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DefaultNamespace" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="MyContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Posts" EntityType="DefaultNamespace.Post" />
+    <EntitySet Name="Tags" EntityType="DefaultNamespace.Tag" />
+    <AssociationSet Name="FK_dbo_Tags_dbo_Posts_Post_ID" Association="DefaultNamespace.FK_dbo_Tags_dbo_Posts_Post_ID">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="Tags" EntitySet="Tags" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Tags" Relationship="DefaultNamespace.FK_dbo_Tags_dbo_Posts_Post_ID" FromRole="Posts" ToRole="Tags" />
+  </EntityType>
+  <EntityType Name="Tag">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Post_ID" Type="Int32" />
+    <NavigationProperty Name="Post" Relationship="DefaultNamespace.FK_dbo_Tags_dbo_Posts_Post_ID" FromRole="Tags" ToRole="Posts" />
+  </EntityType>
+  <Association Name="FK_dbo_Tags_dbo_Posts_Post_ID">
+    <End Role="Posts" Type="DefaultNamespace.Post" Multiplicity="0..1" />
+    <End Role="Tags" Type="DefaultNamespace.Tag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Tags">
+        <PropertyRef Name="Post_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

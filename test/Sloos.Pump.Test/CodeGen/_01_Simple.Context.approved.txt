@@ -1,0 +1,23 @@
+﻿namespace Fact.Models
+{
+    public partial class Context : global::System.Data.Entity.DbContext
+    {
+        static Context()
+        {
+            global::System.Data.Entity.Database.SetInitializer<Context>(null);
+        }
+
+        public Context(string nameOrConnectionString)
+            : base(nameOrConnectionString)
+        {
+        }
+
+        public global::System.Data.Entity.DbSet<global::Fact.Models.Table> Tables { get; set; }
+
+        protected override void OnModelCreating(global::System.Data.Entity.DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new global::Fact.Models.Mapping.TableMap());
+        }
+    }
+}
+

@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\build\Sloos.Settings.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProjectGuid>{B86A867A-E473-4998-A3E9-BA119A743693}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sloos.Pump</RootNamespace>
+    <AssemblyName>Sloos.Pump</AssemblyName>
+    <RunCodeAnalysis Condition="'$(EnableCodeAnalysis)'=='true'">true</RunCodeAnalysis>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.10.0.30320\lib\net40\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.VisualStudio.TextTemplating.Interfaces.11.0.11.0.50728\lib\net45\Microsoft.VisualStudio.TextTemplating.Interfaces.11.0.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\build\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Build\CompileContext.cs" />
+    <Compile Include="EntityFramework\CodeGenEscaper.cs" />
+    <Compile Include="EntityFramework\ContextEntityViewFactory.cs" />
+    <Compile Include="EntityFramework\ContextEntityView.cs" />
+    <Compile Include="EntityFramework\ContextViewFactory.cs" />
+    <Compile Include="EntityFramework\EdmMapping.cs" />
+    <Compile Include="EntityFramework\EfTextTemplateHost.cs" />
+    <Compile Include="EntityFramework\EntityConstructorView.cs" />
+    <Compile Include="EntityFramework\EntityConstructorViewFactory.cs" />
+    <Compile Include="EntityFramework\EntityEntityView.cs" />
+    <Compile Include="EntityFramework\EntityEntityViewFactory.cs" />
+    <Compile Include="EntityFramework\EntityName.cs" />
+    <Compile Include="EntityFramework\EntityNamespace.cs" />
+    <Compile Include="EntityFramework\EntityNavigationView.cs" />
+    <Compile Include="EntityFramework\EntityNavigationViewFactory.cs" />
+    <Compile Include="EntityFramework\ContextView.cs" />
+    <Compile Include="EntityFramework\EntityViewFactory.cs" />
+    <Compile Include="EntityFramework\IGeneratorFactory.cs" />
+    <Compile Include="EntityFramework\IMappingPropertyMatcher.cs" />
+    <Compile Include="EntityFramework\IMappingRelationshipForeignKeyMatcher.cs" />
+    <Compile Include="EntityFramework\KeyFormatter.cs" />
+    <Compile Include="EntityFramework\ManyToManyKeys.cs" />
+    <Compile Include="EntityFramework\ManyToManyNavigation.cs" />
+    <Compile Include="EntityFramework\ManyToManyStoreTable.cs" />
+    <Compile Include="EntityFramework\MappingColumnNameView.cs" />
+    <Compile Include="EntityFramework\MappingColumnNameViewFactory.cs" />
+    <Compile Include="EntityFramework\MappingKeyView.cs" />
+    <Compile Include="EntityFramework\MappingKeyViewFactory.cs" />
+    <Compile Include="EntityFramework\MappingManyToManyView.cs" />
+    <Compile Include="EntityFramework\MappingManyToManyViewFactory.cs" />
+    <Compile Include="EntityFramework\MappingProperty.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherHasStoreGeneratedPattern.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherIsFixedLength.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherIsRequired.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherIsRowVersion.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherIsUnicode.cs" />
+    <Compile Include="EntityFramework\MappingPropertyMatcherMaxLength.cs" />
+    <Compile Include="EntityFramework\MappingPropertyView.cs" />
+    <Compile Include="EntityFramework\MappingPropertyViewFactory.cs" />
+    <Compile Include="EntityFramework\MappingRelationshipForeignKeyMatcherHasForeignKey.cs" />
+    <Compile Include="EntityFramework\MappingRelationshipForeignKeyMatcherHasOptional.cs" />
+    <Compile Include="EntityFramework\MappingRelationshipForeignKeyMatcherHasRequired.cs" />
+    <Compile Include="EntityFramework\MappingRelationshipForeignKeyMatcherWithMany.cs" />
+    <Compile Include="EntityFramework\MappingRelationshipForeignKeyMatcherWithOptional.cs" />
+    <Compile Include="EntityFramework\MappingRelationshipForeignKeyView.cs" />
+    <Compile Include="EntityFramework\MappingRelationshipForeignKeyViewFactory.cs" />
+    <Compile Include="EntityFramework\MappingTableView.cs" />
+    <Compile Include="EntityFramework\MappingTableViewFactory.cs" />
+    <Compile Include="EntityFramework\MappingViewFactory.cs" />
+    <Compile Include="EntityFramework\Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Entity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\Mapping.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Mapping.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityFramework\ReverseFactory.cs" />
+    <Compile Include="EntityFramework\SqlServerGeneratorFactory.cs" />
+    <Compile Include="EntityFramework\Xsd\SsdlSchema.cs">
+      <DependentUpon>SsdlSchema.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextTemplate\ContextFactory.cs" />
+    <Compile Include="TextTemplate\EntityFactory.cs" />
+    <Compile Include="TextTemplate\IFactory.cs" />
+    <Compile Include="TextTemplate\MappingFactory.cs" />
+    <Compile Include="RegurgitatingXmlWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="EntityFramework\Context.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Context.cs</LastGenOutput>
+    </None>
+    <None Include="EntityFramework\Entity.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Entity.cs</LastGenOutput>
+    </None>
+    <None Include="EntityFramework\Mapping.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Mapping.cs</LastGenOutput>
+    </None>
+    <None Include="EntityFramework\Xsd\EntityStoreSchemaGenerator.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="EntityFramework\Xsd\SsdlSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

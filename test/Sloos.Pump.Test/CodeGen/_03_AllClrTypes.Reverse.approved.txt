@@ -1,0 +1,105 @@
+﻿namespace Fact.Models
+{
+    public partial class Context : global::System.Data.Entity.DbContext
+    {
+        static Context()
+        {
+            global::System.Data.Entity.Database.SetInitializer<Context>(null);
+        }
+
+        public Context(string nameOrConnectionString)
+            : base(nameOrConnectionString)
+        {
+        }
+
+        public global::System.Data.Entity.DbSet<global::Fact.Models.Table> Tables { get; set; }
+
+        protected override void OnModelCreating(global::System.Data.Entity.DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new global::Fact.Models.Mapping.TableMap());
+        }
+    }
+}
+
+
+namespace Fact.Models
+{
+    public partial class Table
+    {
+        public global::System.Int32 ID { get; set; }
+        public global::System.Byte byte_type { get; set; }
+        public global::System.Boolean bool_type { get; set; }
+        public global::System.Int16 short_type { get; set; }
+        public global::System.Int32 int_type { get; set; }
+        public global::System.Int64 long_type { get; set; }
+        public global::System.Single float_type { get; set; }
+        public global::System.Double double_type { get; set; }
+        public global::System.Decimal decimal_type { get; set; }
+        public global::System.Guid Guid_type { get; set; }
+        public global::System.TimeSpan TimeSpan_type { get; set; }
+        public global::System.DateTime DateTime_type { get; set; }
+        public global::System.DateTimeOffset DateTimeOffset_type { get; set; }
+        public global::System.Nullable<global::System.Byte> byte_nullable { get; set; }
+        public global::System.Nullable<global::System.Boolean> bool_nullable { get; set; }
+        public global::System.Nullable<global::System.Int16> short_nullable { get; set; }
+        public global::System.Nullable<global::System.Int32> int_nullable { get; set; }
+        public global::System.Nullable<global::System.Int64> long_nullable { get; set; }
+        public global::System.Nullable<global::System.Single> float_nullable { get; set; }
+        public global::System.Nullable<global::System.Double> double_nullable { get; set; }
+        public global::System.Nullable<global::System.Decimal> decimal_nullable { get; set; }
+        public global::System.Nullable<global::System.Guid> Guid_nullable { get; set; }
+        public global::System.Nullable<global::System.TimeSpan> TimeSpan_nullable { get; set; }
+        public global::System.Nullable<global::System.DateTime> DateTime_nullable { get; set; }
+        public global::System.Nullable<global::System.DateTimeOffset> DateTimeOffset_nullable { get; set; }
+        public global::System.Byte[] byte_array_type { get; set; }
+        public global::System.String string_type { get; set; }
+    }
+}
+
+
+namespace Fact.Models.Mapping
+{
+    public class TableMap : global::System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Table>
+    {
+        public TableMap()
+        {
+            // Primary Key
+            this.HasKey(x => x.ID);
+
+            // Properties
+
+            // Table & Column Mappings
+            this.ToTable("Tables", "dbo");
+            this.Property(x => x.ID).HasColumnName("ID");
+            this.Property(x => x.byte_type).HasColumnName("byte_type");
+            this.Property(x => x.bool_type).HasColumnName("bool_type");
+            this.Property(x => x.short_type).HasColumnName("short_type");
+            this.Property(x => x.int_type).HasColumnName("int_type");
+            this.Property(x => x.long_type).HasColumnName("long_type");
+            this.Property(x => x.float_type).HasColumnName("float_type");
+            this.Property(x => x.double_type).HasColumnName("double_type");
+            this.Property(x => x.decimal_type).HasColumnName("decimal_type");
+            this.Property(x => x.Guid_type).HasColumnName("Guid_type");
+            this.Property(x => x.TimeSpan_type).HasColumnName("TimeSpan_type");
+            this.Property(x => x.DateTime_type).HasColumnName("DateTime_type");
+            this.Property(x => x.DateTimeOffset_type).HasColumnName("DateTimeOffset_type");
+            this.Property(x => x.byte_nullable).HasColumnName("byte_nullable");
+            this.Property(x => x.bool_nullable).HasColumnName("bool_nullable");
+            this.Property(x => x.short_nullable).HasColumnName("short_nullable");
+            this.Property(x => x.int_nullable).HasColumnName("int_nullable");
+            this.Property(x => x.long_nullable).HasColumnName("long_nullable");
+            this.Property(x => x.float_nullable).HasColumnName("float_nullable");
+            this.Property(x => x.double_nullable).HasColumnName("double_nullable");
+            this.Property(x => x.decimal_nullable).HasColumnName("decimal_nullable");
+            this.Property(x => x.Guid_nullable).HasColumnName("Guid_nullable");
+            this.Property(x => x.TimeSpan_nullable).HasColumnName("TimeSpan_nullable");
+            this.Property(x => x.DateTime_nullable).HasColumnName("DateTime_nullable");
+            this.Property(x => x.DateTimeOffset_nullable).HasColumnName("DateTimeOffset_nullable");
+            this.Property(x => x.byte_array_type).HasColumnName("byte_array_type");
+            this.Property(x => x.string_type).HasColumnName("string_type");
+
+            // Relationships
+        }
+    }
+}
+

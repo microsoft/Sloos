@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbo" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="dboContainer">
+    <EntitySet Name="Posts" EntityType="dbo.Posts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PostTags" EntityType="dbo.PostTags" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Tags" EntityType="dbo.Tags" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_dbo_PostTags_dbo_Posts_Post_PostId" Association="dbo.FK_dbo_PostTags_dbo_Posts_Post_PostId">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="PostTags" EntitySet="PostTags" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_PostTags_dbo_Tags_Tag_TagId" Association="dbo.FK_dbo_PostTags_dbo_Tags_Tag_TagId">
+      <End Role="Tags" EntitySet="Tags" />
+      <End Role="PostTags" EntitySet="PostTags" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Posts">
+    <Key>
+      <PropertyRef Name="PostId" />
+    </Key>
+    <Property Name="PostId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="PostTags">
+    <Key>
+      <PropertyRef Name="Post_PostId" />
+      <PropertyRef Name="Tag_TagId" />
+    </Key>
+    <Property Name="Post_PostId" Type="int" Nullable="false" />
+    <Property Name="Tag_TagId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Tags">
+    <Key>
+      <PropertyRef Name="TagId" />
+    </Key>
+    <Property Name="TagId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK_dbo_PostTags_dbo_Posts_Post_PostId">
+    <End Role="Posts" Type="dbo.Posts" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PostTags" Type="dbo.PostTags" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="PostId" />
+      </Principal>
+      <Dependent Role="PostTags">
+        <PropertyRef Name="Post_PostId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_PostTags_dbo_Tags_Tag_TagId">
+    <End Role="Tags" Type="dbo.Tags" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PostTags" Type="dbo.PostTags" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tags">
+        <PropertyRef Name="TagId" />
+      </Principal>
+      <Dependent Role="PostTags">
+        <PropertyRef Name="Tag_TagId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

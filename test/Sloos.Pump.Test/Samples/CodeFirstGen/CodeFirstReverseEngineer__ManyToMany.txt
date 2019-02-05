@@ -1,0 +1,112 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace ManyToMany.Models.Mapping
+{
+    public class PostMap : EntityTypeConfiguration<Post>
+    {
+        public PostMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.PostId);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("Posts");
+            this.Property(t => t.PostId).HasColumnName("PostId");
+
+            // Relationships
+            this.HasMany(t => t.Tags)
+                .WithMany(t => t.Posts)
+                .Map(m =>
+                    {
+                        m.ToTable("PostTags");
+                        m.MapLeftKey("Post_PostId");
+                        m.MapRightKey("Tag_TagId");
+                    });
+
+
+        }
+    }
+}
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace ManyToMany.Models.Mapping
+{
+    public class TagMap : EntityTypeConfiguration<Tag>
+    {
+        public TagMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.TagId);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("Tags");
+            this.Property(t => t.TagId).HasColumnName("TagId");
+            this.Property(t => t.Name).HasColumnName("Name");
+        }
+    }
+}
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using ManyToMany.Models.Mapping;
+
+namespace ManyToMany.Models
+{
+    public partial class ManyToManyContext : DbContext
+    {
+        static ManyToManyContext()
+        {
+            Database.SetInitializer<ManyToManyContext>(null);
+        }
+
+        public ManyToManyContext()
+            : base("Name=ManyToManyContext")
+        {
+        }
+
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new PostMap());
+            modelBuilder.Configurations.Add(new TagMap());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace ManyToMany.Models
+{
+    public partial class Post
+    {
+        public Post()
+        {
+            this.Tags = new List<Tag>();
+        }
+
+        public int PostId { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace ManyToMany.Models
+{
+    public partial class Tag
+    {
+        public Tag()
+        {
+            this.Posts = new List<Post>();
+        }
+
+        public int TagId { get; set; }
+        public string Name { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+    }
+}

@@ -1,0 +1,27 @@
+﻿namespace Fact.Models.Mapping
+{
+    public class PostMap : global::System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<Post>
+    {
+        public PostMap()
+        {
+            // Primary Key
+            this.HasKey(x => x.PostId);
+
+            // Properties
+
+            // Table & Column Mappings
+            this.ToTable("Posts", "dbo");
+            this.Property(x => x.PostId).HasColumnName("PostId");
+
+            // Relationships
+            this.HasMany(x => x.Tags)
+                .WithMany(x => x.Posts)
+                .Map(x =>
+                    {
+                        x.ToTable("PostTags")
+                        x.MapLeftKey("Post_PostId")
+                        x.MapRightKey("Tag_TagId")
+                    });
+        }
+    }
+}

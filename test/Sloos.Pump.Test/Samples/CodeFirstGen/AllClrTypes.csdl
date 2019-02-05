@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DefaultNamespace" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="MyContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Tables" EntityType="DefaultNamespace.Table" />
+  </EntityContainer>
+  <EntityType Name="Table">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="byte_type" Type="Byte" Nullable="false" />
+    <Property Name="bool_type" Type="Boolean" Nullable="false" />
+    <Property Name="short_type" Type="Int16" Nullable="false" />
+    <Property Name="int_type" Type="Int32" Nullable="false" />
+    <Property Name="long_type" Type="Int64" Nullable="false" />
+    <Property Name="float_type" Type="Single" Nullable="false" />
+    <Property Name="double_type" Type="Double" Nullable="false" />
+    <Property Name="decimal_type" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="Guid_type" Type="Guid" Nullable="false" />
+    <Property Name="TimeSpan_type" Type="Time" Nullable="false" />
+    <Property Name="DateTime_type" Type="DateTime" Nullable="false" />
+    <Property Name="DateTimeOffset_type" Type="DateTimeOffset" Nullable="false" />
+    <Property Name="byte_nullable" Type="Byte" />
+    <Property Name="bool_nullable" Type="Boolean" />
+    <Property Name="short_nullable" Type="Int16" />
+    <Property Name="int_nullable" Type="Int32" />
+    <Property Name="long_nullable" Type="Int64" />
+    <Property Name="float_nullable" Type="Single" />
+    <Property Name="double_nullable" Type="Double" />
+    <Property Name="decimal_nullable" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Guid_nullable" Type="Guid" />
+    <Property Name="TimeSpan_nullable" Type="Time" />
+    <Property Name="DateTime_nullable" Type="DateTime" />
+    <Property Name="DateTimeOffset_nullable" Type="DateTimeOffset" />
+    <Property Name="byte_array_type" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="string_type" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+  </EntityType>
+</Schema>

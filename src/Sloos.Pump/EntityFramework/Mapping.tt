@@ -1,0 +1,98 @@
+﻿<#@ import namespace="System.Linq" #>
+<#
+// Simplifying assumptions based on reverse engineer rules
+//  - No complex types
+//  - One entity container
+//  - No inheritance
+//  - Always have two navigation properties
+//  - All associations expose FKs (except many:many)
+#>
+<#@ template hostspecific="true" language="C#" #>
+<#@
+ output extension=".cs" #>
+namespace <#= this.Namespace #>
+{
+    public class <#= this.ConceptualMappingName #> : global::System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<<#= this.ConceptualName #>>
+    {
+        public <#= this.ConceptualMappingName #>()
+        {
+            // Primary Key
+            <#= this.MappingKeyView.AsStatement() #>
+
+            // Properties
+<#
+			foreach (var mappingPropertyView in this.MappingPropertyViews) {
+				if (mappingPropertyView.Attributes.Count == 0) {
+					continue;
+				}
+#>
+            this.Property(x => x.<#= mappingPropertyView.ConceptualName #>)
+<#
+				foreach (var attribute in mappingPropertyView.Attributes) {
+#>
+                <#= attribute #><# if (attribute == mappingPropertyView.Attributes[mappingPropertyView.Attributes.Count - 1]) #><#= ";" #>
+<#			
+				}
+#>
+<#			
+			}
+#>
+
+            // Table & Column Mappings
+            this.ToTable("<#= this.StoreName #>", "<#= this.SchemaName #>");
+<#
+			foreach (var mappingPropertyView in this.MappingPropertyViews) {
+#>
+            this.Property(x => x.<#= mappingPropertyView.ConceptualName #>).HasColumnName("<#= mappingPropertyView.ConceptualName #>");
+<#			
+			}
+#>
+
+            // Relationships
+<#
+            // Many-to-Many
+			foreach (var mappingManyToManyView in this.MappingManyToManyViews) {
+#>
+            this.HasMany(x => x.<#= mappingManyToManyView.HasMany #>)
+                .WithMany(x => x.<#= mappingManyToManyView.WithMany #>)
+                .Map(x =>
+                    {
+                        x.ToTable("<#= mappingManyToManyView.MappingTableName #>");
+                        x.MapLeftKey("<#= mappingManyToManyView.MapLeftKeys[0] #>");
+                        x.MapRightKey("<#= mappingManyToManyView.MapRightKeys[0] #>");
+                    });
+<#			
+			}
+#>
+<#
+			// One-to-Many
+            foreach (var mappingRelationshipForeignKeyView in this.MappingRelationshipForeignKeyViews) {
+#>
+            this.<#= mappingRelationshipForeignKeyView.EntityNecessity #>(x => x.<#= mappingRelationshipForeignKeyView.EntityName #>)
+<#
+				foreach (var attribute in mappingRelationshipForeignKeyView.Attributes) {
+#>
+                <#= attribute #><# if (attribute == mappingRelationshipForeignKeyView.Attributes[mappingRelationshipForeignKeyView.Attributes.Count - 1]) #><#= ";" #>
+<#			
+				}
+#>
+<#			
+			}
+#>
+        }
+    }
+}
+<#+
+	public global::Sloos.Pump.TextTemplate.MappingFactory Factory { get; set; }
+
+	public string StoreName { get { return this.Factory.StoreName; } }
+	public string ConceptualMappingName { get { return this.Factory.ConceptualMappingName; } }
+	public string ConceptualName { get { return this.Factory.ConceptualName; } }
+	public string SchemaName { get { return this.Factory.SchemaName; } }
+	public string Namespace { get { return this.Factory.Namespace; } }
+
+    public global::Sloos.Pump.EntityFramework.MappingKeyView MappingKeyView { get { return this.Factory.MappingKeyView; } }
+    public global::Sloos.Pump.EntityFramework.MappingPropertyView[] MappingPropertyViews { get { return this.Factory.MappingPropertyViews; } }
+    public global::Sloos.Pump.EntityFramework.MappingRelationshipForeignKeyView[] MappingRelationshipForeignKeyViews { get { return this.Factory.MappingRelationshipForeignKeyViews; } }
+    public global::Sloos.Pump.EntityFramework.MappingManyToManyView[] MappingManyToManyViews { get { return this.Factory.MappingManyToManyViews; } }
+#>

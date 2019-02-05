@@ -1,0 +1,101 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace OneToMany.Models.Mapping
+{
+    public class PostMap : EntityTypeConfiguration<Post>
+    {
+        public PostMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.ID);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("Posts");
+            this.Property(t => t.ID).HasColumnName("ID");
+        }
+    }
+}
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace OneToMany.Models.Mapping
+{
+    public class TagMap : EntityTypeConfiguration<Tag>
+    {
+        public TagMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.ID);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("Tags");
+            this.Property(t => t.ID).HasColumnName("ID");
+            this.Property(t => t.Post_ID).HasColumnName("Post_ID");
+
+            // Relationships
+            this.HasOptional(t => t.Post)
+                .WithMany(t => t.Tags)
+                .HasForeignKey(d => d.Post_ID);
+
+        }
+    }
+}
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using OneToMany.Models.Mapping;
+
+namespace OneToMany.Models
+{
+    public partial class OneToManyContext : DbContext
+    {
+        static OneToManyContext()
+        {
+            Database.SetInitializer<OneToManyContext>(null);
+        }
+
+        public OneToManyContext()
+            : base("Name=OneToManyContext")
+        {
+        }
+
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new PostMap());
+            modelBuilder.Configurations.Add(new TagMap());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace OneToMany.Models
+{
+    public partial class Post
+    {
+        public Post()
+        {
+            this.Tags = new List<Tag>();
+        }
+
+        public int ID { get; set; }
+        public virtual ICollection<Tag> Tags { get; set; }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace OneToMany.Models
+{
+    public partial class Tag
+    {
+        public int ID { get; set; }
+        public Nullable<int> Post_ID { get; set; }
+        public virtual Post Post { get; set; }
+    }
+}

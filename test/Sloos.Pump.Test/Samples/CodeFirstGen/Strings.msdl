@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dboContainer" CdmEntityContainer="MyContext">
+    <EntitySetMapping Name="Tables">
+      <EntityTypeMapping TypeName="DefaultNamespace.Table">
+        <MappingFragment StoreEntitySet="Tables">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Default" ColumnName="Default" />
+          <ScalarProperty Name="Required" ColumnName="Required" />
+          <ScalarProperty Name="MaxLength128" ColumnName="MaxLength128" />
+          <ScalarProperty Name="MinLength100MaxLength128" ColumnName="MinLength100MaxLength128" />
+          <ScalarProperty Name="NotUnicode" ColumnName="NotUnicode" />
+          <ScalarProperty Name="FixedLength" ColumnName="FixedLength" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

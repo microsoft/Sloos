@@ -1,0 +1,47 @@
+﻿<#@ template hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+namespace <#= this.Namespace #>
+{
+    public partial class <#= this.ConceptualName #>
+    {
+<#
+		if (this.EntityConstructorViews.Length > 0) {
+#>
+        public <#= this.ConceptualName #>()
+        {
+<#
+			foreach (var property in this.EntityConstructorViews) {
+#>
+            this.<#= property.Name #> = new <#= property.TypeName #>();
+<#
+            }
+#>
+        }
+<#
+        }
+#>
+<#   
+    foreach (var property in this.Properties) { 
+#>
+        public <#= property.TypeName #> <#= property.Name #> { get; set; }
+<#
+    }
+	foreach (var property in this.NavigationProperties) {
+#>
+        public virtual <#= property.TypeName #> <#= property.Name #> { get; set; }
+<#
+    }
+#>
+    }
+}
+
+<#+
+	public global::Sloos.Pump.TextTemplate.EntityFactory Factory { get; set; }
+
+	public string StoreName { get { return this.Factory.StoreName; } }
+	public string ConceptualName { get { return this.Factory.ConceptualName; } }
+	public string Namespace { get { return this.Factory.Namespace; } }
+	public global::Sloos.Pump.EntityFramework.EntityConstructorView[] EntityConstructorViews { get { return this.Factory.EntityConstructorViews; } }
+	public global::Sloos.Pump.EntityFramework.EntityEntityView[] Properties { get { return this.Factory.Properties; } }
+	public global::Sloos.Pump.EntityFramework.EntityNavigationView[] NavigationProperties { get { return this.Factory.NavigationProperties; } }
+#>

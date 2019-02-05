@@ -1,0 +1,158 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace InverseMapping.Models.Mapping
+{
+    public class BlogMap : EntityTypeConfiguration<Blog>
+    {
+        public BlogMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.Id);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("Blogs");
+            this.Property(t => t.Id).HasColumnName("Id");
+            this.Property(t => t.Name).HasColumnName("Name");
+        }
+    }
+}
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace InverseMapping.Models.Mapping
+{
+    public class PersonMap : EntityTypeConfiguration<Person>
+    {
+        public PersonMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.Id);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("People");
+            this.Property(t => t.Id).HasColumnName("Id");
+            this.Property(t => t.Name).HasColumnName("Name");
+        }
+    }
+}
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace InverseMapping.Models.Mapping
+{
+    public class PostMap : EntityTypeConfiguration<Post>
+    {
+        public PostMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.Id);
+
+            // Properties
+            // Table & Column Mappings
+            this.ToTable("Posts");
+            this.Property(t => t.Id).HasColumnName("Id");
+            this.Property(t => t.Title).HasColumnName("Title");
+            this.Property(t => t.BlogId).HasColumnName("BlogId");
+            this.Property(t => t.CreatedBy_Id).HasColumnName("CreatedBy_Id");
+            this.Property(t => t.UpdatedBy_Id).HasColumnName("UpdatedBy_Id");
+
+            // Relationships
+            this.HasRequired(t => t.Blog)
+                .WithMany(t => t.Posts)
+                .HasForeignKey(d => d.BlogId);
+            this.HasOptional(t => t.Person)
+                .WithMany(t => t.Posts)
+                .HasForeignKey(d => d.CreatedBy_Id);
+            this.HasOptional(t => t.Person1)
+                .WithMany(t => t.Posts1)
+                .HasForeignKey(d => d.UpdatedBy_Id);
+
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace InverseMapping.Models
+{
+    public partial class Blog
+    {
+        public Blog()
+        {
+            this.Posts = new List<Post>();
+        }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+    }
+}
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using InverseMapping.Models.Mapping;
+
+namespace InverseMapping.Models
+{
+    public partial class InverseMappingContext : DbContext
+    {
+        static InverseMappingContext()
+        {
+            Database.SetInitializer<InverseMappingContext>(null);
+        }
+
+        public InverseMappingContext()
+            : base("Name=InverseMappingContext")
+        {
+        }
+
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<Post> Posts { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new BlogMap());
+            modelBuilder.Configurations.Add(new PersonMap());
+            modelBuilder.Configurations.Add(new PostMap());
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace InverseMapping.Models
+{
+    public partial class Person
+    {
+        public Person()
+        {
+            this.Posts = new List<Post>();
+            this.Posts1 = new List<Post>();
+        }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Post> Posts1 { get; set; }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+namespace InverseMapping.Models
+{
+    public partial class Post
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public int BlogId { get; set; }
+        public Nullable<int> CreatedBy_Id { get; set; }
+        public Nullable<int> UpdatedBy_Id { get; set; }
+        public virtual Blog Blog { get; set; }
+        public virtual Person Person { get; set; }
+        public virtual Person Person1 { get; set; }
+    }
+}
