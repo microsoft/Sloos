@@ -120,7 +120,6 @@ namespace Sloos.Common.Test
             using (var context = new Context(connectionString))
             {
                 context.Database.EnsureCreated();
-                Assert.False(context.WebMetrics.Any());
             }
 
             // NOTE: Using snapshot is advised, but LocalDB does not support it.
@@ -180,7 +179,8 @@ namespace Sloos.Common.Test
 
             // Use LocalDB as the temporary database for the test.  Substitute with a
             // connection string more appropriate to your environment.
-            string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
+            //string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
+            string connectionString = $@"Server=localhost;Initial Catalog=CrapMagic;Trusted_Connection=True";
 
             // Build up some fake Cosmos output.
             StringBuilder sb = new StringBuilder();
@@ -191,9 +191,6 @@ namespace Sloos.Common.Test
             sb.AppendLine("1,http://support.microsoft.com/kb/732,199,0.01,0.25,0.5,0.75,2.1,5.01");
             sb.AppendLine("1,http://support.microsoft.com/kb/376,112,0.01,0.25,0.5,0.75,2.1,5.01");
             sb.AppendLine("1,http://support.microsoft.com/kb/546,414,0.01,0.25,0.5,0.75,2.1,5.01");
-
-            // Read in the fake Cosmos output.  Instead of using this stream, why not use
-            //  -> new CosmosStream("http://cosmos05.osdinfra.net:88/cosmos/0365exp.adhoc/my/stream.csv");
 
             var factory = new DelimitedColumnFactory();
             var delimitedHeader = new DelimitedHeader(
@@ -208,7 +205,7 @@ namespace Sloos.Common.Test
             // Ensure the database is created before bulk loading the data.
             using (var context = new Context(connectionString))
             {
-                Assert.False(context.WebMetrics.Any());
+                context.Database.EnsureCreated();
             }
 
             // Bulk load the data.
