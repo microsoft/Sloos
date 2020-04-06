@@ -34,10 +34,30 @@ namespace Sloos.Common.Test
         {
             var values = new[] { "field" };
             var testSubject = new CsvSerializer<TestData.Simple>();
+
             var row = testSubject.Deserialize(TestHelpers.StringArrayToStream(values)).First();
 
             Assert.Equal(default(int), row.ID);
             Assert.Equal("field", row.Field);
+        }
+
+        [Fact]
+        public void CsvSerializer_ColumnNames_Respect_OrderAttribute()
+        {
+            var testSubject = new CsvSerializer<TestData.ExplicitlyOrdered>();
+            Assert.Equal("Field0", testSubject.ColumnNames[0]);
+            Assert.Equal("Field1", testSubject.ColumnNames[1]);
+            Assert.Equal("Field2", testSubject.ColumnNames[2]);
+            Assert.Equal("Field3", testSubject.ColumnNames[3]);
+        }
+
+        [Fact]
+        public void CsvSerializer_ColumnNames_Respect_DefinitionOrder()
+        {
+            var testSubject = new CsvSerializer<TestData.ImplicitlyOrdered>();
+            Assert.Equal("Field1", testSubject.ColumnNames[0]);
+            Assert.Equal("Field2", testSubject.ColumnNames[1]);
+            Assert.Equal("Field3", testSubject.ColumnNames[2]);
         }
 
         [Fact]

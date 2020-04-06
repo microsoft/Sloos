@@ -43,6 +43,8 @@ namespace Sloos.Common
             }
         }
 
+        public string[] ColumnNames => this.propertyInfos.Select(x => x.Name).ToArray();
+
         public IEnumerable<T> Deserialize(Stream stream)
         {
             return this.Deserialize(stream, ',');

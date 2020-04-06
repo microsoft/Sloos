@@ -138,8 +138,11 @@ namespace Sloos.Common.Test
                 sqlBulkCopy.DestinationTableName = "WebMetrics";
                 sqlBulkCopy.BatchSize = 10000;
 
+                var columnNames = (new string[1]{ "ID" })
+                    .Concat(serializer.ColumnNames)
+                    .ToArray();
 
-                sqlBulkCopy.WriteToServer(ObjectReader.Create(metrics, "ID", "Uri", "Count", "Min", "P25", "P50", "P75", "P99", "Max"));
+                sqlBulkCopy.WriteToServer(ObjectReader.Create(metrics, columnNames));
                 transactionScope.Complete();
             }
 
