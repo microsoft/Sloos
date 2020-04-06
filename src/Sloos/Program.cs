@@ -23,7 +23,6 @@ namespace Sloos
 
             var application = new Application(options.BatchSize);
             return application.Pump(options.Table, options.Source, options.Destination);
-
         }
     }
 }
