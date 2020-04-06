@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using FastMember;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Transactions;
 using Xunit;
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -61,181 +64,178 @@ namespace Sloos.Common.Test
         [DataMember(Order = 7)] [Required] public double Max { get; set; }
     }
 
-    // TODO(chrboum) :: port .NET Core 3.1 and EF.Core
     // Create a context to create our database, and declare the tables that exist.
-    //public class Context : DbContext
-    //{
-    //    static Context()
-    //    {
-    //        Database.SetInitializer(new ContextInitializer());
-    //    }
+    public class Context : DbContext
+    {
+        public Context(string nameOrConnectionString)
+            : base(new DbContextOptionsBuilder()
+                  .UseSqlServer(nameOrConnectionString)
+                  .Options)
+        {
+        }
 
-    //    public Context(string nameOrConnectionString)
-    //        : base (nameOrConnectionString)
-    //    {
-    //    }
+        public Context(DbContextOptions options)
+            : base(options)
+        {
+        }
 
-    //    public IDbSet<WebMetric> WebMetrics { get; set; } 
-
-    //    // Create the DB if it does not exist.  It will never exist because I use
-    //    // a random file name every time this test is run.
-    //    internal class ContextInitializer : CreateDatabaseIfNotExists<Context>
-    //    {
-    //    }
-    //}
+        public DbSet<WebMetric> WebMetrics { get; set; }
+    }
 
     // !!! EXAMPLES !!!
     // Everyone loves examples!
 
-    //public class SqlBulkCopyTest
-    //{
-    //    // Bulk loading of data using CsvSerializer.
-    //    [Fact]
-    //    [Trait("Category", "Slow")]
-    //    public void SqlBulkCopy_CsvSerializer()
-    //    {
-    //        string path = Path.Combine(
-    //            Directory.GetCurrentDirectory(),
-    //            Path.GetRandomFileName());
-    //        path = Path.ChangeExtension(path, "mdf");
+    public class SqlBulkCopyTest
+    {
+        // Bulk loading of data using CsvSerializer.
+        [Fact]
+        [Trait("Category", "Slow")]
+        public void SqlBulkCopy_CsvSerializer()
+        {
+            string path = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                Path.GetRandomFileName());
+            path = Path.ChangeExtension(path, "mdf");
 
-    //        // Use LocalDB as the temporary database for the test.  Substitute with a
-    //        // connection string more appropriate to your environment.
-    //        string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
+            // Use LocalDB as the temporary database for the test.  Substitute with a
+            // connection string more appropriate to your environment.
+            //string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
+            //string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
+            string connectionString = $@"Server=localhost;Initial Catalog=CrapMagic;Trusted_Connection=True";
 
-    //        // Build up some fake Cosmos output.
-    //        StringBuilder sb = new StringBuilder();
-    //        sb.AppendLine("http://support.microsoft.com/kb/100,100,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("http://support.microsoft.com/kb/101,500,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("http://support.microsoft.com/kb/200,700,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("http://support.microsoft.com/kb/321,902,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("http://support.microsoft.com/kb/732,199,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("http://support.microsoft.com/kb/376,112,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("http://support.microsoft.com/kb/546,414,0.01,0.25,0.5,0.75,2.1,5.01");
+            // Build up some fake Cosmos output.
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("http://support.microsoft.com/kb/100,100,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("http://support.microsoft.com/kb/101,500,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("http://support.microsoft.com/kb/200,700,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("http://support.microsoft.com/kb/321,902,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("http://support.microsoft.com/kb/732,199,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("http://support.microsoft.com/kb/376,112,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("http://support.microsoft.com/kb/546,414,0.01,0.25,0.5,0.75,2.1,5.01");
 
-    //        // Read in the fake Cosmos output.  Instead of using this stream, why not use
-    //        //  -> new CosmosStream("http://cosmos05.osdinfra.net:88/cosmos/0365exp.adhoc/my/stream.csv");
-    //        var serializer = new CsvSerializer<WebMetric>();
-    //        var metrics = serializer.Deserialize(sb.ToStream());
+            var serializer = new CsvSerializer<WebMetric>();
+            var metrics = serializer.Deserialize(sb.ToStream());
 
-    //        // Ensure the database is created before bulk loading the data.
-    //        using (var context = new Context(connectionString))
-    //        {
-    //            Assert.False(context.WebMetrics.Any());
-    //        }
+            // Ensure the database is created before bulk loading the data.
+            using (var context = new Context(connectionString))
+            {
+                context.Database.EnsureCreated();
+                Assert.False(context.WebMetrics.Any());
+            }
 
-    //        // NOTE: Using snapshot is advised, but LocalDB does not support it.
-    //        //const IsolationLevel isolationLevel = IsolationLevel.Snapshot;
-    //        const IsolationLevel isolationLevel = IsolationLevel.ReadCommitted;
+            // NOTE: Using snapshot is advised, but LocalDB does not support it.
+            //const IsolationLevel isolationLevel = IsolationLevel.Snapshot;
+            const IsolationLevel isolationLevel = IsolationLevel.ReadCommitted;
 
-    //        // Bulk load the data.
-    //        using (var transactionScope = new TransactionScope(
-    //            TransactionScopeOption.Required,
-    //            new TransactionOptions { IsolationLevel = isolationLevel }))
-    //        using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(connectionString))
-    //        {
-    //            sqlBulkCopy.DestinationTableName = "WebMetrics";
-    //            sqlBulkCopy.BatchSize = 10000;
+            // Bulk load the data.
+            using (var transactionScope = new TransactionScope(
+                TransactionScopeOption.Required,
+                new TransactionOptions { IsolationLevel = isolationLevel }))
+            using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(connectionString))
+            {
+                sqlBulkCopy.DestinationTableName = "WebMetrics";
+                sqlBulkCopy.BatchSize = 10000;
 
-    //            sqlBulkCopy.WriteToServer(metrics.AsDataReader());
-    //            transactionScope.Complete();
-    //        }
 
-    //        // Read data back out of the DB...party on it.
-    //        using (var context = new Context(connectionString))
-    //        {
-    //            Assert.Equal(7, context.WebMetrics.Count());
-                
-    //            // There are seven unique IDs.
-    //            var set = new HashSet<long>(context.WebMetrics.Select(x => x.ID));
-    //            Assert.Equal(7, set.Count);
+                sqlBulkCopy.WriteToServer(ObjectReader.Create(metrics, "ID", "Uri", "Count", "Min", "P25", "P50", "P75", "P99", "Max"));
+                transactionScope.Complete();
+            }
 
-    //            Assert.True(context.WebMetrics.All(x => x.Min == 0.01));
-    //            Assert.True(context.WebMetrics.All(x => x.Max == 5.01));
-    //        }
-    //    }
+            // Read data back out of the DB...party on it.
+            using (var context = new Context(connectionString))
+            {
+                Assert.Equal(7, context.WebMetrics.Count());
 
-    //    // This is almost identical to CsvSerializer example except it utilizes 
-    //    // DelimitedParser as an IDataReader.  There are differences to be aware of.
-    //    //
-    //    //  1. A column must be added to the data to account for the ID (primary key)
-    //    //      -or-
-    //    //     You must remove the ID from the entity, and not load it.
-    //    //  2. You must defined the define the schema of columns ahead of time, of the
-    //    //     form <name>:<type>.  The type is optional and defaults to string.
-    //    //
-    //    // There are potentially some benefits because you avoid having to parse
-    //    // the CSV, and then convert the CSV to an entity, and then converting
-    //    // the entities to a DataReader.  In the grand scheme of things the 
-    //    // performance must likely exceeds that of the speed with which data can be
-    //    // bulk loaded.
-    //    [Fact]
-    //    [Trait("Category", "Slow")]
-    //    public void SqlBulkCopy_DelimitedParser()
-    //    {
-    //        string path = Path.Combine(
-    //            Directory.GetCurrentDirectory(),
-    //            Path.GetRandomFileName());
-    //        path = Path.ChangeExtension(path, "mdf");
+                // There are seven unique IDs.
+                var set = new HashSet<long>(context.WebMetrics.Select(x => x.ID));
+                Assert.Equal(7, set.Count);
 
-    //        // Use LocalDB as the temporary database for the test.  Substitute with a
-    //        // connection string more appropriate to your environment.
-    //        string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
+                Assert.True(context.WebMetrics.All(x => x.Min == 0.01));
+                Assert.True(context.WebMetrics.All(x => x.Max == 5.01));
+            }
+        }
 
-    //        // Build up some fake Cosmos output.
-    //        StringBuilder sb = new StringBuilder();
-    //        sb.AppendLine("1,http://support.microsoft.com/kb/100,100,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("1,http://support.microsoft.com/kb/101,500,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("1,http://support.microsoft.com/kb/200,700,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("1,http://support.microsoft.com/kb/321,902,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("1,http://support.microsoft.com/kb/732,199,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("1,http://support.microsoft.com/kb/376,112,0.01,0.25,0.5,0.75,2.1,5.01");
-    //        sb.AppendLine("1,http://support.microsoft.com/kb/546,414,0.01,0.25,0.5,0.75,2.1,5.01");
+        // This is almost identical to CsvSerializer example except it utilizes 
+        // DelimitedParser as an IDataReader.  There are differences to be aware of.
+        //
+        //  1. A column must be added to the data to account for the ID (primary key)
+        //      -or-
+        //     You must remove the ID from the entity, and not load it.
+        //  2. You must defined the define the schema of columns ahead of time, of the
+        //     form <name>:<type>.  The type is optional and defaults to string.
+        //
+        // There are potentially some benefits because you avoid having to parse
+        // the CSV, and then convert the CSV to an entity, and then converting
+        // the entities to a DataReader.  In the grand scheme of things the 
+        // performance must likely exceeds that of the speed with which data can be
+        // bulk loaded.
+        [Fact]
+        [Trait("Category", "Slow")]
+        public void SqlBulkCopy_DelimitedParser()
+        {
+            string path = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                Path.GetRandomFileName());
+            path = Path.ChangeExtension(path, "mdf");
 
-    //        // Read in the fake Cosmos output.  Instead of using this stream, why not use
-    //        //  -> new CosmosStream("http://cosmos05.osdinfra.net:88/cosmos/0365exp.adhoc/my/stream.csv");
+            // Use LocalDB as the temporary database for the test.  Substitute with a
+            // connection string more appropriate to your environment.
+            string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
 
-    //        var factory = new DelimitedColumnFactory();
-    //        var delimitedHeader = new DelimitedHeader(
-    //            factory.Create(new[] { "ID:long", "Uri", "Count:long", "Min:double", "P25:double", "P50:double", "P75:double", "P99:double", "Max:double" }));
+            // Build up some fake Cosmos output.
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("1,http://support.microsoft.com/kb/100,100,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("1,http://support.microsoft.com/kb/101,500,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("1,http://support.microsoft.com/kb/200,700,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("1,http://support.microsoft.com/kb/321,902,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("1,http://support.microsoft.com/kb/732,199,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("1,http://support.microsoft.com/kb/376,112,0.01,0.25,0.5,0.75,2.1,5.01");
+            sb.AppendLine("1,http://support.microsoft.com/kb/546,414,0.01,0.25,0.5,0.75,2.1,5.01");
 
-    //        var settings = new DelimitedParserSettings();
-    //        settings.DelimitedHeader = delimitedHeader;
-    //        settings.Delimiter = ',';
+            // Read in the fake Cosmos output.  Instead of using this stream, why not use
+            //  -> new CosmosStream("http://cosmos05.osdinfra.net:88/cosmos/0365exp.adhoc/my/stream.csv");
 
-    //        var parser = DelimitedParser.Create(settings, sb.ToStream());
+            var factory = new DelimitedColumnFactory();
+            var delimitedHeader = new DelimitedHeader(
+                factory.Create(new[] { "ID:long", "Uri", "Count:long", "Min:double", "P25:double", "P50:double", "P75:double", "P99:double", "Max:double" }));
 
-    //        // Ensure the database is created before bulk loading the data.
-    //        using (var context = new Context(connectionString))
-    //        {
-    //            Assert.False(context.WebMetrics.Any());
-    //        }
+            var settings = new DelimitedParserSettings();
+            settings.DelimitedHeader = delimitedHeader;
+            settings.Delimiter = ',';
 
-    //        // Bulk load the data.
-    //        using (var transactionScope = new TransactionScope(
-    //            TransactionScopeOption.Required,
-    //            new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
-    //        using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(connectionString))
-    //        {
-    //            sqlBulkCopy.DestinationTableName = "WebMetrics";
-    //            sqlBulkCopy.BatchSize = 10000;
+            var parser = DelimitedParser.Create(settings, sb.ToStream());
 
-    //            sqlBulkCopy.WriteToServer(parser);
-    //            transactionScope.Complete();
-    //        }
+            // Ensure the database is created before bulk loading the data.
+            using (var context = new Context(connectionString))
+            {
+                Assert.False(context.WebMetrics.Any());
+            }
 
-    //        // Read data back out of the DB...party on it.
-    //        using (var context = new Context(connectionString))
-    //        {
-    //            Assert.Equal(7, context.WebMetrics.Count());
+            // Bulk load the data.
+            using (var transactionScope = new TransactionScope(
+                TransactionScopeOption.Required,
+                new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
+            using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(connectionString))
+            {
+                sqlBulkCopy.DestinationTableName = "WebMetrics";
+                sqlBulkCopy.BatchSize = 10000;
 
-    //            // There are seven unique IDs.
-    //            var set = new HashSet<long>(context.WebMetrics.Select(x => x.ID));
-    //            Assert.Equal(7, set.Count);
+                sqlBulkCopy.WriteToServer(parser);
+                transactionScope.Complete();
+            }
 
-    //            Assert.True(context.WebMetrics.All(x => x.Min == 0.01));
-    //            Assert.True(context.WebMetrics.All(x => x.Max == 5.01));
-    //        }
-    //    }
-    //}
+            // Read data back out of the DB...party on it.
+            using (var context = new Context(connectionString))
+            {
+                Assert.Equal(7, context.WebMetrics.Count());
+
+                // There are seven unique IDs.
+                var set = new HashSet<long>(context.WebMetrics.Select(x => x.ID));
+                Assert.Equal(7, set.Count);
+
+                Assert.True(context.WebMetrics.All(x => x.Min == 0.01));
+                Assert.True(context.WebMetrics.All(x => x.Max == 5.01));
+            }
+        }
+    }
 }
