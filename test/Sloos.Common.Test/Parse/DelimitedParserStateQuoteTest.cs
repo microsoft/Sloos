@@ -28,7 +28,7 @@ namespace Sloos.Common.Test
             var testSubject = DelimitedParserStub.Create<DelimitedParserStateQuote>(',');
             testSubject.Parse(("foo\""));
 
-            Assert.Equal(1, testSubject.Fields.Count);
+            Assert.Single(testSubject.Fields);
             Assert.Equal("foo", testSubject.Fields[0]);
         }
 
@@ -38,7 +38,7 @@ namespace Sloos.Common.Test
             var testSubject = DelimitedParserStub.Create<DelimitedParserStateQuote>(',');
             testSubject.Parse("f\"\"oo\"");
 
-            Assert.Equal(1, testSubject.Fields.Count);
+            Assert.Single(testSubject.Fields);
             Assert.Equal("f\"oo", testSubject.Fields[0]);
         }
 
@@ -57,7 +57,7 @@ namespace Sloos.Common.Test
             var testSubject = DelimitedParserStub.Create<DelimitedParserStateQuote>(',');
             testSubject.Parse("f\\roo\"");
 
-            Assert.Equal(1, testSubject.Fields.Count);
+            Assert.Single(testSubject.Fields);
             Assert.Equal("f\\roo", testSubject.Fields[0]);
         }
 
@@ -67,7 +67,7 @@ namespace Sloos.Common.Test
             var testSubject = DelimitedParserStub.Create<DelimitedParserStateQuote>(',');
             testSubject.Parse("foo,\"\"\",");
 
-            Assert.Equal(1, testSubject.Fields.Count);
+            Assert.Single(testSubject.Fields);
             Assert.Equal("foo,\"", testSubject.Fields[0]);
         }
 
@@ -77,7 +77,7 @@ namespace Sloos.Common.Test
             var testSubject = DelimitedParserStub.Create<DelimitedParserStateQuote>(',');
             testSubject.Parse("f\r\noo\"");
 
-            Assert.Equal(1, testSubject.Fields.Count);
+            Assert.Single(testSubject.Fields);
             Assert.Equal("f\r\noo", testSubject.Fields[0]);
         }
     }

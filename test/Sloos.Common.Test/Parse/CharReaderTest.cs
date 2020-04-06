@@ -30,7 +30,7 @@ namespace Sloos.Common.Test
         public void CharReader_CodeCoverage()
         {
             var reader = this.CreateCharReader();
-            Assert.NotNull(reader.Current);
+            Assert.NotNull(reader);
 
             var enumerable = reader as System.Collections.IEnumerable;
             Assert.NotNull(enumerable);

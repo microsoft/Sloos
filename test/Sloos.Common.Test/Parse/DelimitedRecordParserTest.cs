@@ -40,7 +40,7 @@ namespace Sloos.Common.Test
             var testSubject = new DelimitedRecordParser(reader, ',');
 
             var fields = testSubject.Parse().ToArray();
-            Assert.Equal(1, fields.Length);
+            Assert.Single(fields);
 
             Assert.Equal("a", fields[0]);
         }

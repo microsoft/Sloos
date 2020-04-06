@@ -28,7 +28,7 @@ namespace Sloos.Common.Test
             var testSubject = CsvSerializerHelpers.OrderByProperty(typeof(TestData.NamedMembers))
                 .ToArray();
 
-            Assert.Equal(1, testSubject.Length);
+            Assert.Single(testSubject);
             Assert.Equal("Field", testSubject[0].Name);
         }
 

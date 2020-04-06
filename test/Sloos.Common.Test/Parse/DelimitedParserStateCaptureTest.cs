@@ -20,7 +20,7 @@ namespace Sloos.Common.Test
             var testSubject = DelimitedParserStub.Create<DelimitedParserStateCapture>(',');
             testSubject.Parse(",");
 
-            Assert.Equal(1, testSubject.Fields.Count);
+            Assert.Single(testSubject.Fields);
             Assert.Equal("", testSubject.Fields[0]);
         }
 
@@ -30,7 +30,7 @@ namespace Sloos.Common.Test
             var testSubject = DelimitedParserStub.Create<DelimitedParserStateCapture>(',');
             testSubject.Parse("foo,");
 
-            Assert.Equal(1, testSubject.Fields.Count);
+            Assert.Single(testSubject.Fields);
             Assert.Equal("foo", testSubject.Fields[0]);
         }
 
@@ -40,7 +40,7 @@ namespace Sloos.Common.Test
             var testSubject = DelimitedParserStub.Create<DelimitedParserStateCapture>(',');
             testSubject.Parse("foo\r\n");
 
-            Assert.Equal(1, testSubject.Fields.Count);
+            Assert.Single(testSubject.Fields);
             Assert.Equal("foo", testSubject.Fields[0]);
         }
 
@@ -50,7 +50,7 @@ namespace Sloos.Common.Test
             var testSubject = DelimitedParserStub.Create<DelimitedParserStateCapture>(',');
             testSubject.Parse("foo\n");
 
-            Assert.Equal(1, testSubject.Fields.Count);
+            Assert.Single(testSubject.Fields);
             Assert.Equal("foo", testSubject.Fields[0]);
         }
     }

@@ -22,7 +22,7 @@ namespace Sloos.Common.Test
                 ',');
 
             var results = testSubject.Parse().ToArray();
-            Assert.Equal(1, results.Length);
+            Assert.Single(results);
 
             var record = results.First();
             Assert.Equal(2, record.Count());
