@@ -99,9 +99,12 @@ namespace Sloos.Common.Test
 
             // Use LocalDB as the temporary database for the test.  Substitute with a
             // connection string more appropriate to your environment.
+            // ??? USED to WORK ???
             //string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
-            //string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
-            string connectionString = $@"Server=localhost;Initial Catalog=CrapMagic;Trusted_Connection=True";
+            // ... CURRENTLY WORKS ...
+            string connectionString = $@"Server=(localdb)\MSSQLLocalDB;Initial Catalog={path};Trusted_Connection=True";
+            // !!! FAILSAFE, but DO NOT COMMIT !!!
+            //string connectionString = $@"Server=localhost;Initial Catalog=CrapMagic;Trusted_Connection=True";
 
             // Build up some fake Cosmos output.
             StringBuilder sb = new StringBuilder();
@@ -179,8 +182,12 @@ namespace Sloos.Common.Test
 
             // Use LocalDB as the temporary database for the test.  Substitute with a
             // connection string more appropriate to your environment.
+            // ??? USED to WORK ???
             //string connectionString = $@"Server=(localdb)\MSSQLLocalDB;AttachDbFilename={path};Trusted_Connection=True";
-            string connectionString = $@"Server=localhost;Initial Catalog=CrapMagic;Trusted_Connection=True";
+            // ... CURRENTLY WORKS ...
+            string connectionString = $@"Server=(localdb)\MSSQLLocalDB;Initial Catalog={path};Trusted_Connection=True";
+            // !!! FAILSAFE, but DO NOT COMMIT !!!
+            //string connectionString = $@"Server=localhost;Initial Catalog=CrapMagic;Trusted_Connection=True";
 
             // Build up some fake Cosmos output.
             StringBuilder sb = new StringBuilder();
