@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Globalization;
 using Microsoft.CSharp;
 

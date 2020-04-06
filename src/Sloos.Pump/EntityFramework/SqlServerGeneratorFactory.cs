@@ -4,12 +4,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.Entity.Design;
-using System.Data.Entity.Design.PluralizationServices;
 using System.Globalization;
 using System.Linq;
-using EntityContainer = System.Data.Metadata.Edm.EntityContainer;
+
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 
 namespace Sloos.Pump.EntityFramework
 {

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Data.Entity.Core.Metadata.Edm;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Sloos.Pump.EntityFramework
 {

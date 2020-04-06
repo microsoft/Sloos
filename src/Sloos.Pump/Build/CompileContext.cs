@@ -4,10 +4,10 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using Microsoft.CSharp;
+using Microsoft.EntityFrameworkCore;
 
 namespace Sloos.Common.Build
 {

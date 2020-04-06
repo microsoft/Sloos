@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
 using System.Xml;
+
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Sloos.Pump.EntityFramework
 {

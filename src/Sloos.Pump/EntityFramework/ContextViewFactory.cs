@@ -2,8 +2,9 @@
 // Licensed under the MIT license.
 
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
+
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Sloos.Pump.EntityFramework
 {

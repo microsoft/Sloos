@@ -4,13 +4,13 @@ namespace Microsoft.DbContextPackage.Utilities
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
-    using System.Data.Entity.Core.Metadata.Edm;
-    using System.Data.Entity.Core.Objects;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Text;
     using Microsoft.VisualStudio.TextTemplating;
+    using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 
     public class EfTextTemplateHost : ITextTemplatingEngineHost
     {
@@ -70,12 +70,11 @@ namespace Microsoft.DbContextPackage.Utilities
                         Assembly.GetExecutingAssembly().Location,
                         typeof(Uri).Assembly.Location,
                         typeof(Enumerable).Assembly.Location,
-                        typeof(ObjectContext).Assembly.Location,
 
                         //       Because of the issue in ResolveAssemblyReference, these are not being
                         //       loaded but are required by the default templates
                         //typeof(System.Data.AcceptRejectRule).Assembly.Location,
-                        typeof(System.Data.Entity.Design.EdmToObjectNamespaceMap).Assembly.Location,
+                        typeof(Microsoft.EntityFrameworkCore.Metadata.Internal.EntityType).Assembly.Location,
                         typeof(System.Xml.ConformanceLevel).Assembly.Location,
                         typeof(System.Xml.Linq.Extensions).Assembly.Location,
                     };

@@ -1,24 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
+// TODO(chrboum) :: port to .NET Core 3.1
+//using System.Data.Entity.Design.PluralizationServices;
+//using System.Globalization;
 
 namespace Sloos.Pump.EntityFramework
 {
     public sealed class EntityName
     {
         private readonly string name;
-        private readonly PluralizationService pluralizationService;
+        //private readonly PluralizationService pluralizationService;
 
         public EntityName(string name)
         {
             this.name = name;
-            this.pluralizationService = PluralizationService.CreateService(new CultureInfo("en-US"));
+            //this.pluralizationService = PluralizationService.CreateService(new CultureInfo("en-US"));
         }
 
-        public string StoreName => this.pluralizationService.Pluralize(this.name);
-        public string ConceptualName => this.pluralizationService.Singularize(this.name);
+        //public string StoreName => this.pluralizationService.Pluralize(this.name);
+        //public string ConceptualName => this.pluralizationService.Singularize(this.name);
+        //public string ConceptualMappingName => $"{this.ConceptualName}Map";
+        public string StoreName => this.name;
+        public string ConceptualName => this.name;
         public string ConceptualMappingName => $"{this.ConceptualName}Map";
     }
 }
