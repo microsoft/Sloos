@@ -9,6 +9,8 @@
     <AssemblyName>sloos</AssemblyName>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.EntityFrameworkCore, Version=2.2.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
