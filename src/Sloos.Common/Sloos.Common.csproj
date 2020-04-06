@@ -1,86 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\build\Sloos.Settings.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{EE13D617-D29C-4D50-9E09-6426B1A9ADAD}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
-    <RootNamespace>Sloos.Common</RootNamespace>
-    <AssemblyName>Sloos.Common</AssemblyName>
     <RunCodeAnalysis Condition="'$(EnableCodeAnalysis)'=='true'">true</RunCodeAnalysis>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\build\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Args\ArgsHelpers.cs" />
-    <Compile Include="Args\ArgsParser.cs" />
-    <Compile Include="Args\Option.cs" />
-    <Compile Include="Args\ParsedArg.cs" />
-    <Compile Include="Args\ParsedArgFactory.cs" />
-    <Compile Include="EntityDataReader.cs" />
-    <Compile Include="Extension.cs" />
-    <Compile Include="Parse\CharReader.cs" />
-    <Compile Include="Parse\CsvSerializerState.cs" />
-    <Compile Include="Parse\CsvSerializer.cs" />
-    <Compile Include="Parse\CsvSerializerFactory.cs" />
-    <Compile Include="Parse\CsvSerializerHeaderFactory.cs" />
-    <Compile Include="Parse\CsvSerializerHelpers.cs" />
-    <Compile Include="Parse\DelimitedColumn.cs" />
-    <Compile Include="Parse\DelimitedColumnFactory.cs" />
-    <Compile Include="Parse\DelimitedHeader.cs" />
-    <Compile Include="Parse\DelimitedHeaderElector.cs" />
-    <Compile Include="Parse\DelimitedParser.cs" />
-    <Compile Include="Parse\DelimitedParserElector.cs" />
-    <Compile Include="Parse\DelimitedParserSettings.cs" />
-    <Compile Include="Parse\DelimitedParserState.Capture.cs" />
-    <Compile Include="Parse\DelimitedParserState.cs" />
-    <Compile Include="Parse\DelimitedParserState.Delimit.cs" />
-    <Compile Include="Parse\DelimitedParserState.NewLine.cs" />
-    <Compile Include="Parse\DelimitedParserState.Quote.cs" />
-    <Compile Include="Parse\DelimitedRecordParser.cs" />
-    <Compile Include="Parse\Delimiter.cs" />
-    <Compile Include="Parse\DelimiterElector.cs" />
-    <Compile Include="Parse\ElectedColumnType.cs" />
-    <Compile Include="Parse\IDelimitedParser.cs" />
-    <Compile Include="Parse\Spreadsheet.cs" />
-    <Compile Include="Parse\SpreadsheetColumnTypeDetector.cs" />
-    <Compile Include="Parse\SpreadsheetFactory.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringSplit.cs" />
-    <Compile Include="Type\AnonymousEntityTypeBuilder.cs" />
-    <Compile Include="Type\CoercionHelpers.cs" />
-    <Compile Include="Type\TypeElector.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Type\TypeInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <PackageReference Include="EntityFramework" Version="6.2.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
