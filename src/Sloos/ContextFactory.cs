@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
+using Bricelam.EntityFrameworkCore.Design;
 using Microsoft.CSharp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -20,8 +21,8 @@ namespace Sloos
         public Context(string nameOfConnectionString)
             : base(new DbContextOptions<Context>())
         {
-            //var opts = (new DbContextOptionsBuilder())
-            //    .UseSqlServer("connectionString");
+            var opts = (new DbContextOptionsBuilder())
+                .UseSqlServer(nameOfConnectionString);
         }
 
         public Context(DbContextOptions options)
@@ -73,6 +74,14 @@ namespace Sloos
             this.context = this.Construct(typeName, columns);
         }
 
+        private bool IsPlural(Pluralizer pluralizer, string word)
+        {
+            var method = pluralizer.GetType().GetMethod(
+                "IsPlural", 
+                BindingFlags.NonPublic | BindingFlags.Instance);
+            return (bool)method.Invoke(pluralizer, new object[] { word });
+        }
+
         private ContextTemplate Construct(string typeName, Column[] columns)
         {
             var cxt = new ContextTemplate
@@ -81,22 +90,24 @@ namespace Sloos
                 Columns = columns,
             };
 
-
-            // TODO(chrboum) :: port to .NET Core, use Bricelam.EntityFrameworkCore.Pluralizer
-            cxt.RowName = typeName;
-            cxt.TableName = typeName;
-
-            //var service = PluralizationService.CreateService(CultureInfo.CurrentCulture);
-            //if (service.IsPlural(typeName))
-            //{
-            //    cxt.RowName = service.Singularize(typeName);
-            //    cxt.TableName = typeName;
-            //}
-            //else
-            //{
-            //    cxt.RowName = typeName;
-            //    cxt.TableName = service.Pluralize(typeName);
-            //}
+            // NOTE(chrboum) :: one does not blindly include Bricelam.EntityFrameworkCore. 
+            // To enable this code you must edit the project's .csproj, locate the package
+            // reference, and then delete the following lines.
+            //
+            //  <PrivateAssets>all</PrivateAssets>
+            //  < IncludeAssets > runtime; build; native; contentfiles; analyzers; buildtransitive </ IncludeAssets >
+            //
+            var pluralizer = new Bricelam.EntityFrameworkCore.Design.Pluralizer();
+            if (this.IsPlural(pluralizer, typeName))
+            {
+                cxt.RowName = pluralizer.Singularize(typeName);
+                cxt.TableName = typeName;
+            }
+            else
+            {
+                cxt.RowName = typeName;
+                cxt.TableName = pluralizer.Pluralize(typeName);
+            }
 
             return cxt;
         }
