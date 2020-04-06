@@ -101,70 +101,69 @@ namespace Sloos
             return cxt;
         }
 
-        // TODO(chrboum) :: port to .NET Core
-        //public EntityPump BuildAssembly(
-        //    AssemblyName assemblyName)
-            
-        //{
-        //    string code = this.context.TransformText();
+        public EntityPump BuildAssembly(
+            AssemblyName assemblyName)
 
-        //    using (var codeProvider = new CSharpCodeProvider(
-        //        new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
-        //    {
-        //        var path = Path.GetDirectoryName(
-        //            Assembly.GetExecutingAssembly().Location);
+        {
+            string code = this.context.TransformText();
 
-        //        var assemblies = new List<string>
-        //        {
-        //            "netstandard.dll",
-        //            "System.dll",
-        //            "System.ComponentModel.DataAnnotations.dll",
-        //            "System.Core.dll",
-        //            "System.Data.dll",
-        //            "System.Data.Entity.dll",
-        //            "System.Runtime.Serialization.dll",
-        //            Assembly.GetExecutingAssembly().Location,
-        //            Path.Combine(path, "Microsoft.EntityFrameworkCore.dll"),
-        //            Path.Combine(path, "Microsoft.EntityFrameworkCore.Relational.dll"), // DbContext.Database.Migrate()
-        //            //Path.Combine(path, "Microsoft.EntityFrameworkCore.Abstractions.dll"),
-        //            //Path.Combine(path, "Microsoft.Extensions.Caching.Abstractions.dll"),
-        //            //Path.Combine(path, "Microsoft.Extensions.Caching.Memory.dll"),
-        //            //Path.Combine(path, "Microsoft.Extensions.Configuration.Abstractions.xml"),
-        //            //Path.Combine(path, "Microsoft.Extensions.Configuration.Binder.xml"),
-        //        };
+            using (var codeProvider = new CSharpCodeProvider(
+                new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
+            {
+                var path = Path.GetDirectoryName(
+                    Assembly.GetExecutingAssembly().Location);
 
-        //        var options = new CompilerParameters(
-        //            assemblies.ToArray(),
-        //            assemblyName.CodeBase,
-        //            true)
-        //        {
-        //            //CompilerOptions = string.Format(@"/optimize /lib:""{0}""", path),
-        //            //CompilerOptions = string.Format(@"/target:library"),
-        //            GenerateExecutable = false,
-        //            GenerateInMemory = true,
-        //            OutputAssembly = "Spike.CodeGen.dll",
-        //        };
+                var assemblies = new List<string>
+                {
+                    "netstandard.dll",
+                    "System.dll",
+                    "System.ComponentModel.DataAnnotations.dll",
+                    "System.Core.dll",
+                    "System.Data.dll",
+                    "System.Data.Entity.dll",
+                    "System.Runtime.Serialization.dll",
+                    Assembly.GetExecutingAssembly().Location,
+                    Path.Combine(path, "Microsoft.EntityFrameworkCore.dll"),
+                    Path.Combine(path, "Microsoft.EntityFrameworkCore.Relational.dll"), // DbContext.Database.Migrate()
+                    //Path.Combine(path, "Microsoft.EntityFrameworkCore.Abstractions.dll"),
+                    //Path.Combine(path, "Microsoft.Extensions.Caching.Abstractions.dll"),
+                    //Path.Combine(path, "Microsoft.Extensions.Caching.Memory.dll"),
+                    //Path.Combine(path, "Microsoft.Extensions.Configuration.Abstractions.xml"),
+                    //Path.Combine(path, "Microsoft.Extensions.Configuration.Binder.xml"),
+                };
 
-        //        CompilerResults results = codeProvider.CompileAssemblyFromSource(options, code);
-        //        if (results.Errors.Count > 0)
-        //        {
-        //            string message = $"Cannot compile typed context: {results.Errors[0].ErrorText} (line {results.Errors[0].Line})";
-        //            throw new Exception(message);
-        //        }
-        //    }
+                var options = new CompilerParameters(
+                    assemblies.ToArray(),
+                    assemblyName.CodeBase,
+                    true)
+                {
+                    //CompilerOptions = string.Format(@"/optimize /lib:""{0}""", path),
+                    //CompilerOptions = string.Format(@"/target:library"),
+                    GenerateExecutable = false,
+                    GenerateInMemory = true,
+                    OutputAssembly = "Spike.CodeGen.dll",
+                };
 
-        //    var assembly = Assembly.Load(assemblyName);
-        //    var entityType = assembly.DefinedTypes.First(x => x.Name == this.context.RowName);
-        //    var contextType = assembly.DefinedTypes.First(x => x.Name == "Context");
+                CompilerResults results = codeProvider.CompileAssemblyFromSource(options, code);
+                if (results.Errors.Count > 0)
+                {
+                    string message = $"Cannot compile typed context: {results.Errors[0].ErrorText} (line {results.Errors[0].Line})";
+                    throw new Exception(message);
+                }
+            }
 
-        //    var pump = new EntityPump()
-        //    {
-        //        TableName = this.context.TableName,
-        //        EntityType = entityType,
-        //        ContextType = contextType,
-        //    };
+            var assembly = Assembly.Load(assemblyName);
+            var entityType = assembly.DefinedTypes.First(x => x.Name == this.context.RowName);
+            var contextType = assembly.DefinedTypes.First(x => x.Name == "Context");
 
-        //    return pump;
-        //}
+            var pump = new EntityPump()
+            {
+                TableName = this.context.TableName,
+                EntityType = entityType,
+                ContextType = contextType,
+            };
+
+            return pump;
+        }
     }
 }

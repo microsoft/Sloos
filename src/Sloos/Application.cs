@@ -9,10 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Transactions;
-
+using FastMember;
 using Microsoft.EntityFrameworkCore;
 
-using Sloos.Common;
 using Sloos.Common.Parse;
 using Spike;
 
@@ -93,11 +92,12 @@ namespace Sloos
                 TransactionScopeOption.Required,
                 new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted }))
             {
+
                 using (var sqlBulkCopy = new SqlBulkCopy(connectionString))
                 {
                     sqlBulkCopy.DestinationTableName = pump.TableName;
                     sqlBulkCopy.BatchSize = 10000;
-                    sqlBulkCopy.WriteToServer(EntityDataReaderExtensions.AsDataReader(entities));
+                    sqlBulkCopy.WriteToServer(ObjectReader.Create(entities));
 
                     transactionScope.Complete();
                 }
