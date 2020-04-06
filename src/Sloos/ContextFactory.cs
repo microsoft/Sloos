@@ -2,15 +2,16 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Data.Entity.Design.PluralizationServices;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using Microsoft.CSharp;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Sloos
 {
@@ -19,8 +20,8 @@ namespace Sloos
         public Context(string nameOfConnectionString)
             : base(new DbContextOptions<Context>())
         {
-            var opts = (new DbContextOptionsBuilder())
-                .UseSqlServer("connectionString");
+            //var opts = (new DbContextOptionsBuilder())
+            //    .UseSqlServer("connectionString");
         }
 
         public Context(DbContextOptions options)
@@ -80,84 +81,90 @@ namespace Sloos
                 Columns = columns,
             };
 
-            var service = PluralizationService.CreateService(CultureInfo.CurrentCulture);
-            if (service.IsPlural(typeName))
-            {
-                cxt.RowName = service.Singularize(typeName);
-                cxt.TableName = typeName;
-            }
-            else
-            {
-                cxt.RowName = typeName;
-                cxt.TableName = service.Pluralize(typeName);
-            }
+
+            // TODO(chrboum) :: port to .NET Core, use Bricelam.EntityFrameworkCore.Pluralizer
+            cxt.RowName = typeName;
+            cxt.TableName = typeName;
+
+            //var service = PluralizationService.CreateService(CultureInfo.CurrentCulture);
+            //if (service.IsPlural(typeName))
+            //{
+            //    cxt.RowName = service.Singularize(typeName);
+            //    cxt.TableName = typeName;
+            //}
+            //else
+            //{
+            //    cxt.RowName = typeName;
+            //    cxt.TableName = service.Pluralize(typeName);
+            //}
 
             return cxt;
         }
 
-        public EntityPump BuildAssembly(
-            AssemblyName assemblyName)
+        // TODO(chrboum) :: port to .NET Core
+        //public EntityPump BuildAssembly(
+        //    AssemblyName assemblyName)
             
-        {
-            string code = this.context.TransformText();
+        //{
+        //    string code = this.context.TransformText();
 
-            using (var codeProvider = new CSharpCodeProvider(
-                new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
-            {
-                var path = Path.GetDirectoryName(
-                    Assembly.GetExecutingAssembly().Location);
+        //    using (var codeProvider = new CSharpCodeProvider(
+        //        new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
+        //    {
+        //        var path = Path.GetDirectoryName(
+        //            Assembly.GetExecutingAssembly().Location);
 
-                var assemblies = new List<string>
-                {
-                    "netstandard.dll",
-                    "System.dll",
-                    "System.ComponentModel.DataAnnotations.dll",
-                    "System.Core.dll",
-                    "System.Data.dll",
-                    "System.Data.Entity.dll",
-                    "System.Runtime.Serialization.dll",
-                    Assembly.GetExecutingAssembly().Location,
-                    Path.Combine(path, "Microsoft.EntityFrameworkCore.dll"),
-                    Path.Combine(path, "Microsoft.EntityFrameworkCore.Relational.dll"), // DbContext.Database.Migrate()
-                    //Path.Combine(path, "Microsoft.EntityFrameworkCore.Abstractions.dll"),
-                    //Path.Combine(path, "Microsoft.Extensions.Caching.Abstractions.dll"),
-                    //Path.Combine(path, "Microsoft.Extensions.Caching.Memory.dll"),
-                    //Path.Combine(path, "Microsoft.Extensions.Configuration.Abstractions.xml"),
-                    //Path.Combine(path, "Microsoft.Extensions.Configuration.Binder.xml"),
-                };
+        //        var assemblies = new List<string>
+        //        {
+        //            "netstandard.dll",
+        //            "System.dll",
+        //            "System.ComponentModel.DataAnnotations.dll",
+        //            "System.Core.dll",
+        //            "System.Data.dll",
+        //            "System.Data.Entity.dll",
+        //            "System.Runtime.Serialization.dll",
+        //            Assembly.GetExecutingAssembly().Location,
+        //            Path.Combine(path, "Microsoft.EntityFrameworkCore.dll"),
+        //            Path.Combine(path, "Microsoft.EntityFrameworkCore.Relational.dll"), // DbContext.Database.Migrate()
+        //            //Path.Combine(path, "Microsoft.EntityFrameworkCore.Abstractions.dll"),
+        //            //Path.Combine(path, "Microsoft.Extensions.Caching.Abstractions.dll"),
+        //            //Path.Combine(path, "Microsoft.Extensions.Caching.Memory.dll"),
+        //            //Path.Combine(path, "Microsoft.Extensions.Configuration.Abstractions.xml"),
+        //            //Path.Combine(path, "Microsoft.Extensions.Configuration.Binder.xml"),
+        //        };
 
-                var options = new CompilerParameters(
-                    assemblies.ToArray(),
-                    assemblyName.CodeBase,
-                    true)
-                {
-                    //CompilerOptions = string.Format(@"/optimize /lib:""{0}""", path),
-                    //CompilerOptions = string.Format(@"/target:library"),
-                    GenerateExecutable = false,
-                    GenerateInMemory = true,
-                    OutputAssembly = "Spike.CodeGen.dll",
-                };
+        //        var options = new CompilerParameters(
+        //            assemblies.ToArray(),
+        //            assemblyName.CodeBase,
+        //            true)
+        //        {
+        //            //CompilerOptions = string.Format(@"/optimize /lib:""{0}""", path),
+        //            //CompilerOptions = string.Format(@"/target:library"),
+        //            GenerateExecutable = false,
+        //            GenerateInMemory = true,
+        //            OutputAssembly = "Spike.CodeGen.dll",
+        //        };
 
-                CompilerResults results = codeProvider.CompileAssemblyFromSource(options, code);
-                if (results.Errors.Count > 0)
-                {
-                    string message = $"Cannot compile typed context: {results.Errors[0].ErrorText} (line {results.Errors[0].Line})";
-                    throw new Exception(message);
-                }
-            }
+        //        CompilerResults results = codeProvider.CompileAssemblyFromSource(options, code);
+        //        if (results.Errors.Count > 0)
+        //        {
+        //            string message = $"Cannot compile typed context: {results.Errors[0].ErrorText} (line {results.Errors[0].Line})";
+        //            throw new Exception(message);
+        //        }
+        //    }
 
-            var assembly = Assembly.Load(assemblyName);
-            var entityType = assembly.DefinedTypes.First(x => x.Name == this.context.RowName);
-            var contextType = assembly.DefinedTypes.First(x => x.Name == "Context");
+        //    var assembly = Assembly.Load(assemblyName);
+        //    var entityType = assembly.DefinedTypes.First(x => x.Name == this.context.RowName);
+        //    var contextType = assembly.DefinedTypes.First(x => x.Name == "Context");
 
-            var pump = new EntityPump()
-            {
-                TableName = this.context.TableName,
-                EntityType = entityType,
-                ContextType = contextType,
-            };
+        //    var pump = new EntityPump()
+        //    {
+        //        TableName = this.context.TableName,
+        //        EntityType = entityType,
+        //        ContextType = contextType,
+        //    };
 
-            return pump;
-        }
+        //    return pump;
+        //}
     }
 }
