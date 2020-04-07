@@ -47,6 +47,8 @@ namespace Sloos
                 .Options;
 
 
+            Console.WriteLine($"[{DateTime.Now:o}] Parsing CSV ...");
+
             using (var context = (IEntityPump)Activator.CreateInstance(pump.ContextType, dbContextOptions))
             {
                 context.CreateIfNotExists();
@@ -57,10 +59,10 @@ namespace Sloos
 
             Console.WriteLine($"[{DateTime.Now:o}] Parsing CSV ...");
             long rowCount = 0;
-            Stopwatch completeTimer = Stopwatch.StartNew();
+            var completeTimer = Stopwatch.StartNew();
 
             dynamic serializer = csvSerializerState.Serializer;
-            string[] columnNames = (new string[] { "ID" })
+            var columnNames = (new[] { "ID" })
                 .Concat((string[])serializer.ColumnNames)
                 .ToArray();
 
