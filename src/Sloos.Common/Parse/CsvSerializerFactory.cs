@@ -14,7 +14,7 @@ namespace Sloos.Common.Parse
 
         public CsvSerializerFactory()
         {
-            this.delimiterElector = new DelimiterElector(5);
+            this.delimiterElector = new DelimiterElector(1000);
             this.delimitedHeaderElector = new DelimitedHeaderElector();
         }
 

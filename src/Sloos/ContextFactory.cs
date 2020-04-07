@@ -2,40 +2,34 @@
 // Licensed under the MIT license.
 
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Globalization;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.Serialization;
+using System.Text;
 using Bricelam.EntityFrameworkCore.Design;
-using Microsoft.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 
 namespace Sloos
 {
     public class Context : DbContext
     {
         public Context(string nameOfConnectionString)
-            : base(new DbContextOptions<Context>())
+            : base((new DbContextOptionsBuilder())
+                  .UseSqlServer(nameOfConnectionString)
+                  .Options)
         {
-            var opts = (new DbContextOptionsBuilder())
-                .UseSqlServer(nameOfConnectionString);
         }
 
         public Context(DbContextOptions options)
             : base(options)
         {
         }
-    }
-
-    public class Column
-    {
-        public string Name { get; set; }
-        public int Offset { get; set; }
-        public string TypeName { get; set; }
     }
 
     public class EntityPump
@@ -45,15 +39,24 @@ namespace Sloos
         public Type ContextType { get; set; }
     }
 
+    public class Column
+    {
+        public string Name { get; set; }
+        public int Offset { get; set; }
+        public string TypeName { get; set; }
+    }
+
     class ContextFactory
     {
-        private readonly ContextTemplate context;
+        private string code;
+        private string tableName;
+        private string rowName;
 
         public ContextFactory(
             string typeName,
             Column[] columns)
         {
-            this.context = this.Construct(typeName, columns);
+            this.Construct(typeName, columns);
         }
 
         public ContextFactory(
@@ -71,7 +74,7 @@ namespace Sloos
                 })
                 .ToArray();
 
-            this.context = this.Construct(typeName, columns);
+            this.Construct(typeName, columns);
         }
 
         private bool IsPlural(Pluralizer pluralizer, string word)
@@ -82,14 +85,8 @@ namespace Sloos
             return (bool)method.Invoke(pluralizer, new object[] { word });
         }
 
-        private ContextTemplate Construct(string typeName, Column[] columns)
+        private void Construct(string typeName, Column[] columns)
         {
-            var cxt = new ContextTemplate
-            {
-                Key = "ID",
-                Columns = columns,
-            };
-
             // NOTE(chrboum) :: one does not blindly include Bricelam.EntityFrameworkCore. 
             // To enable this code you must edit the project's .csproj, locate the package
             // reference, and then delete the following lines.
@@ -97,84 +94,102 @@ namespace Sloos
             //  <PrivateAssets>all</PrivateAssets>
             //  < IncludeAssets > runtime; build; native; contentfiles; analyzers; buildtransitive </ IncludeAssets >
             //
-            var pluralizer = new Bricelam.EntityFrameworkCore.Design.Pluralizer();
+            var pluralizer = new Pluralizer();
             if (this.IsPlural(pluralizer, typeName))
             {
-                cxt.RowName = pluralizer.Singularize(typeName);
-                cxt.TableName = typeName;
+                this.rowName = pluralizer.Singularize(typeName);
+                this.tableName = typeName;
             }
             else
             {
-                cxt.RowName = typeName;
-                cxt.TableName = pluralizer.Pluralize(typeName);
+                this.rowName = typeName;
+                this.tableName = pluralizer.Pluralize(typeName);
             }
 
-            return cxt;
+            this.code = ContextTextTemplate.Template(
+                "Spike.CodeGen",
+                this.rowName,
+                this.tableName,
+                "ID",
+                columns);
         }
 
         public EntityPump BuildAssembly(
             AssemblyName assemblyName)
 
         {
-            string code = this.context.TransformText();
+            var options = new CSharpCompilationOptions(
+                OutputKind.DynamicallyLinkedLibrary,
+                reportSuppressedDiagnostics: true,
+                optimizationLevel: OptimizationLevel.Release,
+                generalDiagnosticOption: ReportDiagnostic.Default);
 
-            using (var codeProvider = new CSharpCodeProvider(
-                new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
+            var executingAssembly = Assembly.GetExecutingAssembly();
+            var path = Path.GetDirectoryName(executingAssembly.Location);
+
+            var references = new string[]
             {
-                var path = Path.GetDirectoryName(
-                    Assembly.GetExecutingAssembly().Location);
+                // .NET Core core assemblies
+                typeof(object).Assembly.Location,                                   // System.Object
+                Assembly.Load("netstandard, Version=2.0.0.0").Location,             
+                Assembly.Load("System.Runtime").Location,                           
+                typeof(Compilation).Assembly.Location,                              // CodeAnalysis
+                typeof(Queryable).Assembly.Location,                                // System.Linq
+                typeof(IQueryable).Assembly.Location,                               // System.Linq.Expressions
+                typeof(IAsyncEnumerable<>).Assembly.Location,                       // System.Runtime ??
+                Assembly.Load("Microsoft.Bcl.AsyncInterfaces").Location,            
+                typeof(IServiceProvider).Assembly.Location,                         // System.ComponentModel
+                typeof(KeyAttribute).Assembly.Location,                             // System.ComponentModel.DataAnnotation
+                typeof(System.ComponentModel.IListSource).Assembly.Location,        // System.ComponentModel.TypeConverter
+                typeof(DataContractAttribute).Assembly.Location,                    // System.Runtime.Serialization
+                typeof(DbException).Assembly.Location,                              // System.Data.Common
 
-                var assemblies = new List<string>
-                {
-                    "netstandard.dll",
-                    "System.dll",
-                    "System.ComponentModel.DataAnnotations.dll",
-                    "System.Core.dll",
-                    "System.Data.dll",
-                    "System.Data.Entity.dll",
-                    "System.Runtime.Serialization.dll",
-                    Assembly.GetExecutingAssembly().Location,
-                    Path.Combine(path, "Microsoft.EntityFrameworkCore.dll"),
-                    Path.Combine(path, "Microsoft.EntityFrameworkCore.Relational.dll"), // DbContext.Database.Migrate()
-                    //Path.Combine(path, "Microsoft.EntityFrameworkCore.Abstractions.dll"),
-                    //Path.Combine(path, "Microsoft.Extensions.Caching.Abstractions.dll"),
-                    //Path.Combine(path, "Microsoft.Extensions.Caching.Memory.dll"),
-                    //Path.Combine(path, "Microsoft.Extensions.Configuration.Abstractions.xml"),
-                    //Path.Combine(path, "Microsoft.Extensions.Configuration.Binder.xml"),
-                };
-
-                var options = new CompilerParameters(
-                    assemblies.ToArray(),
-                    assemblyName.CodeBase,
-                    true)
-                {
-                    //CompilerOptions = string.Format(@"/optimize /lib:""{0}""", path),
-                    //CompilerOptions = string.Format(@"/target:library"),
-                    GenerateExecutable = false,
-                    GenerateInMemory = true,
-                    OutputAssembly = "Spike.CodeGen.dll",
-                };
-
-                CompilerResults results = codeProvider.CompileAssemblyFromSource(options, code);
-                if (results.Errors.Count > 0)
-                {
-                    string message = $"Cannot compile typed context: {results.Errors[0].ErrorText} (line {results.Errors[0].Line})";
-                    throw new Exception(message);
-                }
+                executingAssembly.Location,                                         // Sloos (IEntityPump)
+                Path.Combine(path, "Microsoft.EntityFrameworkCore.dll"),            // EntityFramework
+                Path.Combine(path, "Microsoft.EntityFrameworkCore.Design.dll"),     // EntityFramework
+                Path.Combine(path, "Microsoft.EntityFrameworkCore.Relational.dll"), // EntityFramework
+                Path.Combine(path, "System.Data.SqlClient.dll"),                    // SqlClient
             }
+            .Select(x => MetadataReference.CreateFromFile(x))
+            .ToArray();
 
-            var assembly = Assembly.Load(assemblyName);
-            var entityType = assembly.DefinedTypes.First(x => x.Name == this.context.RowName);
-            var contextType = assembly.DefinedTypes.First(x => x.Name == "Context");
+            var compilation = CSharpCompilation.Create(
+                assemblyName.Name,
+                syntaxTrees: new SyntaxTree[] {  CSharpSyntaxTree.ParseText(this.code) },
+                references: references,
+                options: options);
 
-            var pump = new EntityPump()
+            using (var stream = new MemoryStream())
             {
-                TableName = this.context.TableName,
-                EntityType = entityType,
-                ContextType = contextType,
-            };
+                var results = compilation.Emit(stream);
+                if (!results.Success)
+                {
+                    var sb = new StringBuilder();
+                    var errors = results.Diagnostics.Length == 1 ? "error" : "errors";
+                    var errorCount = Math.Max(results.Diagnostics.Length, 10);
+                    sb.AppendLine($@"Cannot compile typed context({results.Diagnostics.Length} {errors})");
+                    sb.AppendLine($@">>> TOP {errorCount} {errors.ToUpper()} <<<");
+                    for(int i=0; i < errorCount; i++)
+                    {
+                        sb.AppendLine($@"[{i}] :: {results.Diagnostics[i]}");
+                    }
 
-            return pump;
+                    throw new Exception(sb.ToString());
+                }
+
+                var assembly = Assembly.Load(stream.ToArray());
+                var entityType = assembly.DefinedTypes.First(x => x.Name == this.rowName);
+                var contextType = assembly.DefinedTypes.First(x => x.Name == "Context");
+
+                var pump = new EntityPump()
+                {
+                    TableName = this.tableName,
+                    EntityType = entityType,
+                    ContextType = contextType,
+                };
+
+                return pump;
+            }
         }
     }
 }

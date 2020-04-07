@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Linq;
 
 namespace Sloos
 {
@@ -13,6 +14,7 @@ namespace Sloos
 
             try
             {
+                //options = ArgsParser<Options>.Parse(args.Skip(1).ToArray());
                 options = ArgsParser<Options>.Parse(args);
             }
             catch (ArgumentException e)

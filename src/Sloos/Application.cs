@@ -36,7 +36,7 @@ namespace Sloos
                 .ToArray();
 
             var contextFactory = new ContextFactory(table, columns);
-            var assemblyName = new AssemblyName("Spike.CodeGen")
+            var assemblyName = new AssemblyName($"Sloos.{Guid.NewGuid():N}.CodeGen")
             {
                 CodeBase = Directory.GetCurrentDirectory(),
             };
@@ -60,13 +60,16 @@ namespace Sloos
             Stopwatch completeTimer = Stopwatch.StartNew();
 
             dynamic serializer = csvSerializerState.Serializer;
+            string[] columnNames = (new string[] { "ID" })
+                .Concat((string[])serializer.ColumnNames)
+                .ToArray();
 
             foreach (var row in serializer.Deserialize(File.OpenRead(source), csvSerializerState.Delimiter, 1))
             {
                 // Commit in "bite-size" chunks...
                 if (rowCount > 0 && rowCount % this.batchSize == 0)
                 {
-                    BulkLoadEntities(pump, connectionString, entities);
+                    BulkLoadEntities(pump, connectionString, entities, columnNames);
                     entities.Clear();
                 }
 
@@ -76,14 +79,14 @@ namespace Sloos
 
             if (entities.Count > 0)
             {
-                BulkLoadEntities(pump, connectionString, entities);
+                BulkLoadEntities(pump, connectionString, entities, columnNames);
             }
 
             Console.WriteLine($"[{DateTime.Now:o}]  -> completed -- {rowCount:N0} rows in {completeTimer.Elapsed}.");
             return 0;
         }
 
-        private void BulkLoadEntities(EntityPump pump, string connectionString, dynamic entities)
+        private void BulkLoadEntities(EntityPump pump, string connectionString, dynamic entities, string[] columnNames)
         {
             Console.WriteLine($"[{DateTime.Now:o}] Preparing rows for commit ...");
             Stopwatch sw = Stopwatch.StartNew();
@@ -97,7 +100,7 @@ namespace Sloos
                 {
                     sqlBulkCopy.DestinationTableName = pump.TableName;
                     sqlBulkCopy.BatchSize = 10000;
-                    sqlBulkCopy.WriteToServer(ObjectReader.Create(entities));
+                    sqlBulkCopy.WriteToServer(ObjectReader.Create(entities, columnNames));
 
                     transactionScope.Complete();
                 }
