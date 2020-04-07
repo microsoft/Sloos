@@ -9,12 +9,16 @@ namespace Sloos.Common.Parse
 {
     public class CsvSerializerFactory
     {
+        private const int PROBE_DEPTH = 1000;
+        private readonly int probeDepth;
+
         private readonly DelimiterElector delimiterElector;
         private readonly DelimitedHeaderElector delimitedHeaderElector;
 
-        public CsvSerializerFactory()
+        public CsvSerializerFactory(int probeDepth = CsvSerializerFactory.PROBE_DEPTH)
         {
-            this.delimiterElector = new DelimiterElector(1000);
+            this.probeDepth = probeDepth;
+            this.delimiterElector = new DelimiterElector(this.probeDepth);
             this.delimitedHeaderElector = new DelimitedHeaderElector();
         }
 
@@ -24,7 +28,7 @@ namespace Sloos.Common.Parse
             toStream.Seek(0, SeekOrigin.Begin);
 
             var factory = new SpreadsheetFactory(delimiter);
-            var spreadsheet = factory.Create(toStream, 1000);
+            var spreadsheet = factory.Create(toStream, this.probeDepth);
             toStream.Seek(0, SeekOrigin.Begin);
 
             var delimitedHeader = this.delimitedHeaderElector.Elect(spreadsheet);
