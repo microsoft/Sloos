@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -53,7 +52,7 @@ namespace Sloos.Common
                 mostCommonType;
         }
 
-        private Type FindMostRelevantType(IEnumerable<string> strings)
+        private Type FindMostRelevantType(string[] strings)
         {
             var typeInfo = strings
                 .Where(x => !string.IsNullOrEmpty(x))
@@ -70,10 +69,11 @@ namespace Sloos.Common
             return typeInfo.TypeInfo.Type;
         }
 
-        private IEnumerable<TypeInfo> GetMatchingTypeInfos(string s)
+        private TypeInfo[] GetMatchingTypeInfos(string s)
         {
             return this.converters
-                .Where(x => this.IsConvertible(x.Converter, s));
+                .Where(x => this.IsConvertible(x.Converter, s))
+                .ToArray();
         }
 
         private bool IsConvertible(TypeConverter converter, string s)

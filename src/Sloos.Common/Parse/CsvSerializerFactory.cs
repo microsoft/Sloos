@@ -24,7 +24,7 @@ namespace Sloos.Common.Parse
             toStream.Seek(0, SeekOrigin.Begin);
 
             var factory = new SpreadsheetFactory(delimiter);
-            var spreadsheet = factory.Create(toStream, 5);
+            var spreadsheet = factory.Create(toStream, 1000);
             toStream.Seek(0, SeekOrigin.Begin);
 
             var delimitedHeader = this.delimitedHeaderElector.Elect(spreadsheet);

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 // NOTE(chrboum): I cannot make any of the replacement T4 engines work, so I
 // am doing it myself.
@@ -9,8 +10,9 @@ namespace Sloos
         public static string Template(string ns, string rowName, string tableName, string keyName, Column[] columns)
         {
             var sb = new StringBuilder();
-            sb.AppendLine(@$"using System.ComponentModel.DataAnnotations;");
+            sb.AppendLine(@$"using System;");
             sb.AppendLine(@$"using System.Linq;");
+            sb.AppendLine(@$"using System.ComponentModel.DataAnnotations;");
             sb.AppendLine(@$"using System.Runtime.Serialization;");
             sb.AppendLine(@$"using Microsoft.EntityFrameworkCore;");
             sb.AppendLine(@$"");
@@ -62,7 +64,9 @@ namespace Sloos
             for (int i = 0; i < columns.Length; i++)
             {
                 var c = columns[i];
-                sb.AppendLine(@$"		[DataMember(Order = {i})] [Required] public {c.TypeName} {c.Name} {{ get; set; }}");
+                var required = c.TypeName.EndsWith("?") ? string.Empty : "[Required]";
+
+                sb.AppendLine(@$"		[DataMember(Order = {i})] {required} public {c.TypeName} {c.Name} {{ get; set; }}");
             }
             sb.AppendLine(@$"	}}");
             sb.AppendLine(@$"}}");

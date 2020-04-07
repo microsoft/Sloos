@@ -32,7 +32,7 @@ namespace Sloos
 
             var columns = csvSerializerState.Names
                 .Zip(csvSerializerState.Types, Tuple.Create)
-                .Select((x, i) => new Column { Name = x.Item1, TypeName = x.Item2.FullName, Offset = i })
+                .Select((x, i) => new Column { Name = x.Item1, TypeName = x.Item2.FriendlyName(), Offset = i })
                 .ToArray();
 
             var contextFactory = new ContextFactory(table, columns);
