@@ -74,7 +74,9 @@ namespace Sloos.Common
         private TypeInfo[] GetMatchingTypeInfos(string s)
         {
             return this.converters
+                // x.Maybe(s) calls .TryParse, which is very fast compared to IsConvertible
                 .Where(x => x.Maybe(s))
+                // TODO(chrboum): IsConvertible is so slow, is it even necessary?
                 .Where(x => this.IsConvertible(x.Converter, s))
                 .ToArray();
         }
