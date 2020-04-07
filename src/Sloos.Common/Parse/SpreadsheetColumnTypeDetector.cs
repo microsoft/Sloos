@@ -15,8 +15,9 @@ namespace Sloos.Common
             this.typeElector = new TypeElector();
         }
 
-        public IEnumerable<ElectedColumnType> Elect(Spreadsheet spreadsheet)
+        public ElectedColumnType[] Elect(Spreadsheet spreadsheet)
         {
+            var result = new ElectedColumnType[spreadsheet.Columns];
             for (int i = 0; i < spreadsheet.Columns; i++)
             {
                 var electedColumnType = new ElectedColumnType()
@@ -25,8 +26,10 @@ namespace Sloos.Common
                     TypeOfNonHeaderRows = this.GetTypeOfNonHeaderRows(spreadsheet, i),
                 };
 
-                yield return electedColumnType;
+                result[i] = electedColumnType;
             }
+
+            return result;
         }
 
         private Type GetTypeOfNonHeaderRows(Spreadsheet spreadsheet, int i)

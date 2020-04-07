@@ -21,8 +21,7 @@ namespace Sloos.Common.Test
                 });
 
             var testSubject = new SpreadsheetColumnTypeDetector();
-            var columns = testSubject.Elect(spreadsheet)
-                .ToArray();
+            var columns = testSubject.Elect(spreadsheet);
 
             columns.Should().HaveCount(2);
             columns[0].TypeOfAllRows.Should().Be(typeof(string));
