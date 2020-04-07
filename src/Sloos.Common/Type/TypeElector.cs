@@ -3,7 +3,9 @@
 
 using System;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Sloos.Common
 {
@@ -15,22 +17,22 @@ namespace Sloos.Common
         {
             this.converters = new[] {
                 // Order is important!
-                TypeInfo.Create(1, typeof(Guid)), 
-                TypeInfo.Create(2, typeof(int)),
-                TypeInfo.Create(3, typeof(long)),
-                TypeInfo.Create(4, typeof(ulong)),
-                TypeInfo.Create(5, typeof(double)),
-                TypeInfo.Create(6, typeof(char)),
+                GuidTypeInfo.Create(1),     // TypeInfo.Create(1, typeof(Guid)),
+                IntTypeInfo.Create(2),      // TypeInfo.Create(2, typeof(int)),
+                LongTypeInfo.Create(3),     // TypeInfo.Create(3, typeof(long)),
+                ULongTypeInfo.Create(4),    // TypeInfo.Create(4, typeof(ulong)),
+                DoubleTypeInfo.Create(5),   // TypeInfo.Create(5, typeof(double)),
+                CharTypeInfo.Create(6),     // TypeInfo.Create(6, typeof(char)),
                 // typeof(byte)
-                TypeInfo.Create(7, typeof(bool)),
+                BoolTypeInfo.Create(7),     // TypeInfo.Create(7, typeof(bool)),
                 // typeof(sbyte)
                 // typeof(short)
                 // typeof(ushort)
                 // typeof(uint)
                 // typeof(float)
                 // typeof(decimal)
-                TypeInfo.Create(8, typeof(TimeSpan)),
-                TypeInfo.Create(9, typeof(DateTime)),
+                TimeSpanTypeInfo.Create(8), // TypeInfo.Create(8, typeof(TimeSpan)),
+                DateTimeTypeInfo.Create(9), // TypeInfo.Create(9, typeof(DateTime)),
                 // typeof(DateTimeOffset)
                 TypeInfo.Create(10, typeof(string)),
             };
@@ -72,6 +74,7 @@ namespace Sloos.Common
         private TypeInfo[] GetMatchingTypeInfos(string s)
         {
             return this.converters
+                .Where(x => x.Maybe(s))
                 .Where(x => this.IsConvertible(x.Converter, s))
                 .ToArray();
         }
