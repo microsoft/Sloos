@@ -214,5 +214,23 @@ namespace Sloos.Common.Test
 
             testSubject.Elect(xs).Should().Be(typeof(string));
         }
+
+        [Fact]
+        public void NullableDouble()
+        {
+            var testSubject = new TypeElector();
+            var xs = new[]
+                     {
+                        "",
+                        null,
+                        "",
+                        "",
+                        "1.01",
+                        "123",
+                        "456.789",
+                     };
+
+            testSubject.Elect(xs).Should().Be(typeof(double?));
+        }
     }
 }
