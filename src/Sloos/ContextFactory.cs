@@ -166,9 +166,13 @@ namespace Sloos
                 {
                     var sb = new StringBuilder();
                     var errors = results.Diagnostics.Length == 1 ? "error" : "errors";
-                    var errorCount = Math.Max(results.Diagnostics.Length, 10);
+                    var errorCount = Math.Min(results.Diagnostics.Length, 10);
                     sb.AppendLine($@"Cannot compile typed context({results.Diagnostics.Length} {errors})");
                     sb.AppendLine($@">>> TOP {errorCount} {errors.ToUpper()} <<<");
+                    sb.AppendLine();
+                    sb.AppendLine("== CODE ==");
+                    sb.AppendLine();
+                    sb.AppendLine(this.code);
                     for(int i=0; i < errorCount; i++)
                     {
                         sb.AppendLine($@"[{i}] :: {results.Diagnostics[i]}");
